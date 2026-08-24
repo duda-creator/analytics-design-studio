@@ -94,7 +94,9 @@ python scripts/validate_dashboard_html.py dashboards/PNL_Dashboard/outputs/dashb
 dashboards/<name>/inputs/{screenshots,requirements,sample_data}/
 dashboards/<name>/outputs/          design artifacts
 handoff/                            exported bundles for the delivery kit
-references/                         design references read by the redesign skill
+references/                         shared project references
+.github/skills/md-dashboard-redesign/reference/
+                                    redesign skill references
 .github/skills/                     the workflow itself
 ```
 
