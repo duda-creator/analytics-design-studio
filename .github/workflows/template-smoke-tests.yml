@@ -1,0 +1,34 @@
+name: Template smoke tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  smoke-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile Python scripts
+        run: python -m compileall -q scripts .github/skills
+
+      - name: Check helper entrypoints
+        run: |
+          python scripts/profile_sample_data.py --help
+          python scripts/validate_dashboard_html.py --help
+
+      - name: Validate worked-example HTML
+        run: >-
+          python scripts/validate_dashboard_html.py
+          dashboards/PNL_Dashboard/outputs/dashboard-redesign.html
+          --require
+          "01 / Current state teardown"
+          "02 / Redesign recommendations"
+          "executive-insight-driven"

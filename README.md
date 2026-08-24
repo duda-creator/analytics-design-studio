@@ -44,8 +44,13 @@ dashboards/
       screenshots/
 ```
 
-`dashboards/PNL_Dashboard/` is a worked example. Start with `md-dashboard-diagnostic`, then run
-`md-dashboard-redesign`. Steps 2-5 in the workflow are currently pending.
+`dashboards/PNL_Dashboard/` is a worked example. Start a new dashboard with
+`/md-dashboard-diagnostic new <name>` or `/md-dashboard-redesign new <name>`, add screenshots and
+requirements under `inputs/`, then run the corresponding skill. Steps 2-5 in the workflow are
+currently pending.
+
+Diagnostic outputs use the dashboard-specific names `dashboards/<name>/outputs/<name>_diagnostic.md`
+and `dashboards/<name>/outputs/<name>_scorecard.html`.
 
 Commit and push your project when ready:
 
@@ -69,6 +74,19 @@ git push
 | 7 | Sign-off + Architecture Decision Record (ADR) | `references/adr/0001-technology-selection.md` |
 
 Steps 2-5 are not yet implemented. Steps 0-1 are.
+
+## Smoke Tests
+
+The template includes a standard-library-only GitHub Actions check. It compiles the Python scripts,
+runs both helper entrypoints with `--help`, and validates the worked-example HTML. Run the same checks
+locally from the repository root:
+
+```powershell
+python -m compileall -q scripts .github/skills
+python scripts/profile_sample_data.py --help
+python scripts/validate_dashboard_html.py dashboards/PNL_Dashboard/outputs/dashboard-redesign.html `
+  --require "01 / Current state teardown" "02 / Redesign recommendations" "executive-insight-driven"
+```
 
 ## Layout
 

@@ -9,6 +9,40 @@ This skill audits a *real, already-built* dashboard against a Dashboard Type × 
 
 Read `references/framework.md` in full before classifying anything. It contains the complete rubric — the type comparison table, the depth ladder, the type × depth ceiling rules, the pitfalls, and a feature library of concrete, non-overlapping signals for every type and every rung — and several of its rules are load-bearing exceptions (e.g. an Operational dashboard can only reach Decision-Driven with delegated authority; an unrequested Executive dashboard sitting at Snapshot is a finding, not a delivery). Skimming a summary instead of the source risks misapplying these.
 
+## Scaffolding a new dashboard
+
+When invoked with `/md-dashboard-diagnostic new <name>`, create the dashboard folder structure
+directly under `dashboards/<name>/`:
+
+```text
+dashboards/<name>/
+	inputs/
+		screenshots/
+		requirements/
+		sample_data/
+	outputs/
+```
+
+Do not create or depend on a shared `dashboards/_template/` folder. Do not overwrite an existing
+`dashboards/<name>/` folder unless explicitly requested. After scaffolding, the user can add the
+dashboard screenshots, requirements, and optional sample data, then invoke
+`/md-dashboard-diagnostic <name>` to run the diagnosis. The skill produces
+`outputs/<name>_diagnostic.md` and `outputs/<name>_scorecard.html`.
+
+## Usage
+
+```text
+/md-dashboard-diagnostic new <name>  # scaffold a new dashboard folder
+/md-dashboard-diagnostic <name>      # diagnose the dashboard
+```
+
+For `new <name>`, confirm that these subfolders exist before returning:
+
+- `dashboards/<name>/inputs/screenshots/`
+- `dashboards/<name>/inputs/requirements/`
+- `dashboards/<name>/inputs/sample_data/`
+- `dashboards/<name>/outputs/`
+
 ## Why this is a diagnosis, not a rebuild
 
 The framework describes what a *finished, well-built* dashboard of each type and depth looks like. This skill runs in reverse: it looks at something that already exists and infers, from the evidence on screen, where it actually landed — which is often not where it was supposed to land. Keep that distinction alive in the language you use: you are reporting what the dashboard *is*, not proposing what to build from scratch.
@@ -110,7 +144,7 @@ Produce a single self-contained HTML file as a companion to the written report. 
 
 If you're extending or restyling it, consult the `frontend-design` skill for the underlying design principles — but the instrument-panel/schematic visual direction already established in the example should carry through rather than being reinvented each time, so the scorecard reads as one consistent product across dashboards.
 
-Save the HTML to the outputs directory and present both files (the markdown report and the HTML scorecard) to the user together — the scorecard is the at-a-glance version, the report is where the reasoning and evidence live.
+Save the files to `dashboards/<name>/outputs/` using the dashboard-specific names `<name>_diagnostic.md` and `<name>_scorecard.html`, then present both files to the user together. The scorecard is the at-a-glance version; the report is where the reasoning and evidence live.
 
 ## Handling edge cases
 

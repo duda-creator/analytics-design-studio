@@ -126,10 +126,12 @@ Confirm `dashboards/<name>/inputs/screenshots/` has at least one image — the p
 
 ## Helper scripts
 
-Two stdlib-only Python scripts live under `scripts/` and should be preferred over writing one-off profiling/validation code:
+Two stdlib-only Python scripts live under the repository-root `scripts/` directory and should be preferred over writing one-off profiling/validation code. Run these commands from the repository root:
 
-- `scripts/profile_sample_data.py <sample_data_dir>` — profiles every CSV in `inputs/sample_data/`: row/column counts, null counts, duplicate full rows, duplicate candidate keys (`*_id`/`*_key` columns), date ranges, and a best-effort cross-file foreign-key check. Use it at the start of Stage 3 instead of hand-writing profiling code. It intentionally avoids pandas/numpy so it isn't affected by local binary/ABI conflicts between those packages — fall back to it if a pandas-based attempt fails.
-- `scripts/validate_dashboard_html.py <html_path> --require "<substring>" ...` — parses the published Stage 5 HTML and fails (non-zero exit) if a required substring is missing, a local `<img>` doesn't resolve on disk, or an in-page `<a href="#...">` anchor has no matching id. Run it after publishing instead of writing a fresh validation script each time.
+- `python scripts/profile_sample_data.py <sample_data_dir>` — profiles every CSV in `inputs/sample_data/`: row/column counts, null counts, duplicate full rows, duplicate candidate keys (`*_id`/`*_key` columns), date ranges, and a best-effort cross-file foreign-key check. Use it at the start of Stage 3 instead of hand-writing profiling code. It intentionally avoids pandas/numpy so it isn't affected by local binary/ABI conflicts between those packages — fall back to it if a pandas-based attempt fails.
+- `python scripts/validate_dashboard_html.py <html_path> --require "<substring>" ...` — parses the published Stage 5 HTML and fails (non-zero exit) if a required substring is missing, a local `<img>` doesn't resolve on disk, or an in-page `<a href="#...">` anchor has no matching id. Run it after publishing instead of writing a fresh validation script each time.
+
+The former copies under `.github/skills/md-dashboard-redesign/scripts/` remain compatibility launchers for existing links; the root scripts are canonical.
 
 ## Pipeline
 
@@ -178,7 +180,7 @@ Do not give generic dashboard-design advice.
 
 ### Stage 3 — Proposed data model → `outputs/03-data-model.md`
 
-Requires `sample_data/`. Run `scripts/profile_sample_data.py` against `inputs/sample_data/` first to establish row/column counts, nulls, duplicate keys, date ranges, and cross-file FK integrity — use its output as the grounding evidence rather than re-deriving it by hand. For each extract, infer grain, columns, types, and relationships to the other extracts. Then design the dimensional model needed to support Stage 2's redesign — not just what the current data already happens to support. That means the fact table(s) at the grain the new comparisons/drill-downs need, dimension tables, and any derived fields the So-What/Now-What layer requires (targets, prior-period deltas, cohorts, running totals) that don't exist in the source yet. Use [reference/data-modeling-guide.md](reference/data-modeling-guide.md) for the modeling patterns, plus ensure the model supports the selected type's semantic needs (for example: decision/authority/sign-off entities for executive-decision-driven, or stable drill-path entities and exception aging for operational-insight-driven). Output:
+Requires `sample_data/`. Run `python scripts/profile_sample_data.py inputs/sample_data/` first to establish row/column counts, nulls, duplicate keys, date ranges, and cross-file FK integrity — use its output as the grounding evidence rather than re-deriving it by hand. For each extract, infer grain, columns, types, and relationships to the other extracts. Then design the dimensional model needed to support Stage 2's redesign — not just what the current data already happens to support. That means the fact table(s) at the grain the new comparisons/drill-downs need, dimension tables, and any derived fields the So-What/Now-What layer requires (targets, prior-period deltas, cohorts, running totals) that don't exist in the source yet. Use [reference/data-modeling-guide.md](reference/data-modeling-guide.md) for the modeling patterns, plus ensure the model supports the selected type's semantic needs (for example: decision/authority/sign-off entities for executive-decision-driven, or stable drill-path entities and exception aging for operational-insight-driven). Output:
 - A full Mermaid ERD showing every proposed table and relationship — the traceability view for gap analysis and lineage
 - A Kimball star/galaxy schema view of the same model: one Mermaid `erDiagram` per fact table (star) plus one constellation diagram listing conformed dimensions across facts (galaxy) — the handoff view for whoever builds the warehouse/semantic layer. See "Presenting the model" in [reference/data-modeling-guide.md](reference/data-modeling-guide.md)
 - A per-table spec: grain, columns (name / type / nullable / description), keys
@@ -197,7 +199,7 @@ In the summary, explicitly include:
 - why this type was chosen,
 - the type-specific reference used.
 
-Publish via the Artifact tool and send the user the link. Then run `scripts/validate_dashboard_html.py` against the published file with `--require` set to the section titles and selected-type strings from the summary, instead of writing a fresh ad hoc validation script.
+Publish via the Artifact tool and send the user the link. Then run `python scripts/validate_dashboard_html.py` against the published file with `--require` set to the section titles and selected-type strings from the summary, instead of writing a fresh ad hoc validation script.
 
 **QA scope for this stage:** the HTML is a stakeholder brief, not a production dashboard build. Browser QA only needs to confirm, at one representative desktop viewport (roughly 1280–1440px wide): local assets (images, Mermaid diagrams) load, in-page anchors resolve, and there's no horizontal overflow. Do not additionally test mobile/tablet viewports or responsive breakpoints unless the user explicitly asks for a responsive or production-grade artifact — that scope belongs to a dedicated dashboard-build task, not a redesign brief.
 
