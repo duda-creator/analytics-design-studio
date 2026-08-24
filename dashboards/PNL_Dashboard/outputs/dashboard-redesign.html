@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P&amp;L Executive Briefing Redesign</title>
+  <style>
+    :root {
+      --paper: #f5f2ec;
+      --surface: #fffdf9;
+      --ink: #17211c;
+      --muted: #667069;
+      --line: #d9d7cf;
+      --brand: #145f52;
+      --brand-dark: #0b4038;
+      --favorable: #217849;
+      --favorable-soft: #e6f2e9;
+      --attention: #b96619;
+      --attention-soft: #fff0dc;
+      --adverse: #b83a32;
+      --quiet: #e9e6df;
+      --blue: #2d5f91;
+      --shadow: 0 18px 48px rgba(25, 35, 29, 0.10);
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(rgba(20, 95, 82, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 95, 82, 0.035) 1px, transparent 1px),
+        var(--paper);
+      background-size: 32px 32px;
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    button, select, table, .sans { font-family: "Trebuchet MS", Verdana, sans-serif; }
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 10;
+      padding: 10px 14px;
+      background: var(--ink);
+      color: white;
+    }
+    .skip-link:focus { left: 12px; top: 12px; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid rgba(23, 33, 28, 0.14);
+      background: rgba(245, 242, 236, 0.96);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      min-height: 58px;
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: max-content;
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+      font-weight: 700;
+    }
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      background: var(--brand);
+      color: white;
+      border-radius: 3px;
+      font-size: 14px;
+    }
+    nav { width: 100%; max-width: 100%; overflow-x: auto; }
+    nav ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 6px;
+      list-style: none;
+      white-space: nowrap;
+    }
+    nav a {
+      display: inline-block;
+      padding: 8px 10px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    nav a:hover, nav a:focus { color: var(--brand); }
+
+    main { overflow: hidden; }
+    .section {
+      padding: 72px 24px;
+      border-bottom: 1px solid rgba(23, 33, 28, 0.12);
+    }
+    .section:nth-child(even) { background: rgba(255, 253, 249, 0.66); }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .narrow { max-width: 900px; }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--brand);
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { margin-top: 0; line-height: 1.12; }
+    h1 { margin-bottom: 20px; max-width: 1040px; font-size: clamp(38px, 6vw, 72px); font-weight: 500; }
+    h2 { margin-bottom: 16px; font-size: clamp(30px, 4vw, 48px); font-weight: 500; }
+    h3 { margin-bottom: 10px; font-size: 22px; }
+    .lede { max-width: 810px; margin: 0; color: #39453e; font-size: 20px; }
+    .small { font-size: 13px; color: var(--muted); }
+
+    .hero {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      padding-top: 84px;
+      background:
+        linear-gradient(110deg, rgba(11, 64, 56, 0.96), rgba(20, 95, 82, 0.90)),
+        url('../inputs/screenshots/P%26L_Report_Overview.png') center 25% / cover;
+      color: white;
+    }
+    .hero .eyebrow { color: #a8e4cc; }
+    .hero .lede { color: #e7f0eb; }
+    .hero-meta {
+      margin-top: 34px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+    }
+    .meta-tag {
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,0.34);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.08);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .brief-shell {
+      margin-top: 36px;
+      border: 1px solid #cfd5cf;
+      border-top: 5px solid var(--brand);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+    }
+    .brief-header {
+      padding: 18px 22px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      background: #f7faf7;
+    }
+    .brief-kicker { margin: 0 0 8px; color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
+    .brief-headline { margin: 0; max-width: 830px; font-size: clamp(22px, 3vw, 34px); line-height: 1.16; }
+    .cycle-control { display: flex; align-items: flex-start; gap: 8px; }
+    .cycle-control label { position: absolute; clip: rect(0 0 0 0); }
+    select {
+      min-height: 38px;
+      border: 1px solid #abb6af;
+      border-radius: 4px;
+      background: white;
+      color: var(--ink);
+      padding: 0 32px 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .data-strip {
+      padding: 10px 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: var(--brand-dark);
+      color: #eaf4ef;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1.45fr repeat(3, 1fr);
+      border-bottom: 1px solid var(--line);
+    }
+    .metric {
+      min-width: 0;
+      padding: 20px 22px;
+      border-right: 1px solid var(--line);
+    }
+    .metric:last-child { border-right: 0; }
+    .metric.primary { background: #edf6f0; }
+    .metric-label { color: var(--muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
+    .metric-value { margin-top: 7px; font-size: clamp(25px, 3vw, 38px); font-weight: 800; line-height: 1; }
+    .metric-variance { margin-top: 10px; color: var(--favorable); font-size: 13px; font-weight: 800; }
+    .metric-context { margin-top: 4px; color: var(--muted); font-size: 12px; }
+
+    .evidence-grid { display: grid; grid-template-columns: 1.6fr 1fr; }
+    .evidence-panel { min-width: 0; padding: 24px 22px; }
+    .evidence-panel + .evidence-panel { border-left: 1px solid var(--line); }
+    .panel-title { margin-bottom: 4px; font-size: 16px; font-weight: 800; }
+    .panel-subtitle { margin: 0 0 18px; color: var(--muted); font-size: 12px; }
+
+    .bridge {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: end;
+      gap: 7px;
+      height: 190px;
+      padding-top: 10px;
+      border-bottom: 1px solid #9ba59f;
+    }
+    .bridge-col { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; min-width: 0; }
+    .bridge-value { margin-bottom: 5px; font-size: 11px; font-weight: 800; text-align: center; }
+    .bridge-bar { min-height: 16px; background: var(--favorable); border-radius: 3px 3px 0 0; }
+    .bridge-bar.base { background: var(--blue); }
+    .bridge-bar.actual { background: var(--brand-dark); }
+    .bridge-label { min-height: 35px; margin-top: 7px; color: var(--muted); font-size: 10px; line-height: 1.15; text-align: center; overflow-wrap: anywhere; }
+    .bridge-note { margin-top: 12px; color: var(--brand-dark); font-size: 12px; font-weight: 800; }
+
+    .threshold-row { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 800; }
+    .threshold-track {
+      position: relative;
+      height: 20px;
+      margin: 10px 0 18px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--favorable-soft) 0 75%, var(--attention-soft) 75% 100%);
+      overflow: visible;
+    }
+    .threshold-fill { width: 73.5%; height: 100%; background: var(--attention); border-radius: 3px 0 0 3px; }
+    .threshold-marker { position: absolute; left: 75%; top: -6px; width: 2px; height: 32px; background: var(--ink); }
+    .threshold-marker::after { content: "15%"; position: absolute; top: 33px; left: -10px; font-size: 10px; font-weight: 800; }
+    .exposure-list { margin: 22px 0 0; padding: 0; list-style: none; }
+    .exposure-list li { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--quiet); font-size: 12px; }
+    .quality-note { margin: 15px 0 0; padding: 10px; border-left: 3px solid var(--attention); background: var(--attention-soft); font-size: 11px; }
+    .brief-footer {
+      padding: 12px 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      background: #f7f5ef;
+      border-top: 1px solid var(--line);
+      font-size: 12px;
+    }
+    .detail-link { color: var(--brand); font-weight: 800; text-decoration: none; }
+
+    .summary-grid, .comparison-grid, .model-grid, .roadmap-grid {
+      display: grid;
+      gap: 18px;
+    }
+    .summary-grid { grid-template-columns: repeat(4, 1fr); margin-top: 34px; }
+    .summary-item { border-top: 3px solid var(--brand); padding-top: 14px; }
+    .summary-value { font-family: "Trebuchet MS", Verdana, sans-serif; font-size: 28px; font-weight: 800; }
+    .summary-label { margin-top: 5px; color: var(--muted); font-size: 14px; }
+
+    .comparison-grid { grid-template-columns: 1fr 1fr; margin-top: 28px; }
+    figure { margin: 0; }
+    .screenshot-frame { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: white; box-shadow: 0 10px 30px rgba(23,33,28,0.08); }
+    .screenshot-frame img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
+    figcaption { padding: 12px 14px; color: var(--muted); font-family: "Trebuchet MS", Verdana, sans-serif; font-size: 12px; }
+
+    .score-row {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 160px 1fr 60px;
+      gap: 14px;
+      align-items: center;
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+      font-size: 13px;
+    }
+    .score-track { height: 12px; background: var(--quiet); border-radius: 2px; overflow: hidden; }
+    .score-fill { height: 100%; background: var(--brand); }
+
+    .wsn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 30px; border: 1px solid var(--line); }
+    .wsn-item { padding: 24px; background: var(--surface); }
+    .wsn-item + .wsn-item { border-left: 1px solid var(--line); }
+    .wsn-number { color: var(--brand); font-family: "Trebuchet MS", Verdana, sans-serif; font-size: 12px; font-weight: 800; }
+    .wsn-item p { margin-bottom: 0; color: #465049; }
+
+    .table-wrap { margin-top: 28px; overflow-x: auto; border: 1px solid var(--line); background: var(--surface); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 12px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: #eef3ef; color: var(--brand-dark); font-size: 11px; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+
+    .model-grid { grid-template-columns: 1fr; margin-top: 28px; }
+    .diagram {
+      min-height: 520px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      font-family: "Trebuchet MS", Verdana, sans-serif;
+    }
+    .diagram-title { margin-bottom: 18px; font-size: 13px; font-weight: 800; text-transform: uppercase; }
+    .diagram-layer { margin-bottom: 14px; padding: 14px; border-left: 4px solid var(--brand); background: #edf4ef; }
+    .diagram-layer.fact { border-color: var(--blue); background: #edf3f8; }
+    .diagram-layer.mart { border-color: var(--attention); background: var(--attention-soft); }
+    .diagram-layer strong { display: block; margin-bottom: 5px; font-size: 13px; }
+    .diagram-layer span { color: var(--muted); font-size: 11px; }
+    .mermaid {
+      display: flex;
+      min-height: 450px;
+      align-items: center;
+      justify-content: center;
+      overflow-x: auto;
+      color: var(--muted);
+      font-size: 11px;
+      white-space: pre;
+    }
+    .mermaid svg { max-width: 100%; height: auto; }
+    .model-notes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .note-block { padding: 16px; border-top: 3px solid var(--brand); background: rgba(255,253,249,0.7); }
+    .note-block h3 { font-size: 17px; }
+    .note-block p { margin-bottom: 0; color: var(--muted); font-size: 14px; }
+
+    .flow { margin-top: 32px; display: grid; grid-template-columns: repeat(7, minmax(100px, 1fr)); gap: 10px; align-items: stretch; }
+    .flow-step { position: relative; padding: 16px 12px; border: 1px solid var(--line); background: var(--surface); font-family: "Trebuchet MS", Verdana, sans-serif; font-size: 12px; font-weight: 800; text-align: center; }
+    .flow-step:not(:last-child)::after { content: ">"; position: absolute; right: -9px; top: 50%; z-index: 2; transform: translateY(-50%); color: var(--brand); font-size: 18px; }
+    .flow-step.certify { border-color: var(--attention); background: var(--attention-soft); }
+    .flow-step.publish { border-color: var(--brand); background: var(--brand); color: white; }
+
+    .risk-list { margin: 30px 0 0; padding: 0; list-style: none; }
+    .risk-list li { display: grid; grid-template-columns: 160px 1fr; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .risk-label { color: var(--adverse); font-family: "Trebuchet MS", Verdana, sans-serif; font-size: 12px; font-weight: 800; text-transform: uppercase; }
+
+    .roadmap-grid { grid-template-columns: repeat(4, 1fr); margin-top: 32px; }
+    .roadmap-step { padding-top: 14px; border-top: 4px solid var(--brand); }
+    .roadmap-step:nth-child(2) { border-color: var(--blue); }
+    .roadmap-step:nth-child(3) { border-color: var(--attention); }
+    .roadmap-step:nth-child(4) { border-color: var(--ink); }
+    .roadmap-step .phase { color: var(--muted); font-family: "Trebuchet MS", Verdana, sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+    .roadmap-step h3 { margin-top: 8px; font-size: 18px; }
+    .roadmap-step p { color: var(--muted); font-size: 13px; }
+
+    .reference-note { margin-top: 34px; padding: 18px; border-left: 4px solid var(--brand); background: #edf4ef; font-size: 14px; }
+    footer { padding: 28px 24px 50px; color: var(--muted); font-family: "Trebuchet MS", Verdana, sans-serif; font-size: 12px; }
+    footer .container { display: flex; justify-content: space-between; gap: 20px; }
+
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 520ms ease, transform 520ms ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    @media (max-width: 900px) {
+      .topbar-inner { width: 100%; align-items: flex-start; flex-direction: column; gap: 4px; }
+      .summary-grid, .metric-grid, .roadmap-grid { grid-template-columns: repeat(2, 1fr); }
+      .metric:nth-child(2) { border-right: 0; }
+      .metric { border-bottom: 1px solid var(--line); }
+      .evidence-grid, .model-grid { grid-template-columns: 1fr; }
+      .model-notes { grid-template-columns: repeat(2, 1fr); }
+      .evidence-panel + .evidence-panel { border-left: 0; border-top: 1px solid var(--line); }
+      .flow { grid-template-columns: 1fr 1fr; }
+      .flow-step::after { display: none; }
+    }
+
+    @media (max-width: 620px) {
+      .section { padding: 54px 16px; }
+      .topbar-inner { padding-left: 16px; padding-right: 16px; }
+      .hero { min-height: 78vh; padding-top: 100px; }
+      .brief-header { grid-template-columns: 1fr; }
+      .metric-grid, .summary-grid, .comparison-grid, .wsn-grid, .roadmap-grid, .flow, .model-notes { grid-template-columns: 1fr; }
+      .metric { border-right: 0; }
+      .wsn-item + .wsn-item { border-left: 0; border-top: 1px solid var(--line); }
+      .bridge { gap: 3px; }
+      .bridge-label { font-size: 9px; }
+      .brief-footer, footer .container { flex-direction: column; }
+      .score-row { grid-template-columns: 120px 1fr 42px; }
+      .risk-list li { grid-template-columns: 1fr; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link sans" href="#content">Skip to content</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-lockup"><span class="brand-mark">P&amp;L</span> Executive Briefing Redesign</div>
+      <nav aria-label="Report sections">
+        <ul>
+          <li><a href="#brief">Proposed brief</a></li>
+          <li><a href="#teardown">Teardown</a></li>
+          <li><a href="#recommendations">Recommendations</a></li>
+          <li><a href="#model">Data model</a></li>
+          <li><a href="#flow">Data flow</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="section hero">
+      <div class="container">
+        <p class="eyebrow">Dashboard redesign / stakeholder report</p>
+        <h1>Profit is ahead of plan. Collections is close to its risk boundary.</h1>
+        <p class="lede">A decision-aware redesign of the P&amp;L report into a curated quarterly briefing for senior leadership, grounded in the supplied dashboard views, requirements, and six source extracts.</p>
+        <div class="hero-meta">
+          <span class="meta-tag">Type: Executive + Insight-Driven</span>
+          <span class="meta-tag">Evidence cycle: 2020 Q4</span>
+          <span class="meta-tag">Primary comparison: Budget</span>
+          <span class="meta-tag">Prototype scope: One entity, assumed USD</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="summary-title">
+      <div class="container narrow reveal">
+        <p class="eyebrow">Executive summary</p>
+        <h2 id="summary-title">The current report shows performance. The redesign explains its significance.</h2>
+        <p class="lede">The source dashboard is useful for finance analysis, but equal-weight KPI cards, a dense P&amp;L matrix, and chart-topic titles make leaders construct the story themselves. The redesigned surface leads with plan performance, quantifies the drivers, and closes with a bounded attention agenda.</p>
+        <div class="summary-grid">
+          <div class="summary-item"><div class="summary-value">$30.9K</div><div class="summary-label">Q4 net income, $8.0K above budget</div></div>
+          <div class="summary-item"><div class="summary-value">22.8%</div><div class="summary-label">Net margin, 4.8pp above target</div></div>
+          <div class="summary-item"><div class="summary-value">80%</div><div class="summary-label">Favorable variance from Revenue and COGS</div></div>
+          <div class="summary-item"><div class="summary-value">14.7%</div><div class="summary-label">Outstanding invoices vs 15% threshold</div></div>
+        </div>
+        <div class="reference-note"><strong>Selected type:</strong> `executive-insight-driven`. The design uses the Executive + Insight-Driven guide as its primary contract and the Executive + Decision-Driven What / So What / Now What framework as a baseline. No formal approval workflow is introduced because the evidence supports attention and implication, not governed executive sign-off.</div>
+      </div>
+    </section>
+
+    <section class="section" id="brief" aria-labelledby="brief-title">
+      <div class="container reveal">
+        <p class="eyebrow">Proposed first screen</p>
+        <h2 id="brief-title">A one-screen quarterly leadership brief</h2>
+        <p class="lede">The primary experience below gives visual priority to the material outcome, keeps comparisons judgeable, and limits interaction to the reporting cycle leadership actually needs.</p>
+
+        <div class="brief-shell" role="region" aria-label="Proposed P and L executive briefing">
+          <div class="brief-header">
+            <div>
+              <p class="brief-kicker">2020 Q4 close / Enterprise P&amp;L</p>
+              <h3 class="brief-headline">Net income reached $30.9K, $8.0K above budget, led by revenue and lower-than-planned COGS.</h3>
+            </div>
+            <div class="cycle-control">
+              <label for="cycle">Reporting cycle</label>
+              <select id="cycle" aria-label="Reporting cycle">
+                <option selected>2020 Q4 close</option>
+                <option>2020 Q3 close</option>
+                <option>2020 Q2 close</option>
+              </select>
+            </div>
+          </div>
+          <div class="data-strip"><span>Actual</span><span>Assumed USD $K</span><span>Source cutoff: 2020-12-31</span><span>Status: Prototype / certification fields required</span></div>
+
+          <div class="metric-grid">
+            <div class="metric primary">
+              <div class="metric-label">Net income</div>
+              <div class="metric-value">$30.9K</div>
+              <div class="metric-variance">+$8.0K / +35.1% vs budget</div>
+              <div class="metric-context">Net margin 22.8%, 4.8pp above target</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Revenue</div>
+              <div class="metric-value">$135.6K</div>
+              <div class="metric-variance">+$3.2K / +2.4% vs budget</div>
+              <div class="metric-context">+$5.6K vs Q3</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Gross profit</div>
+              <div class="metric-value">$80.6K</div>
+              <div class="metric-variance">+$6.4K / +8.6% vs budget</div>
+              <div class="metric-context">59.4% gross margin</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Operating expense</div>
+              <div class="metric-value">$41.9K</div>
+              <div class="metric-variance">$1.5K favorable vs budget</div>
+              <div class="metric-context">$1.7K higher than Q3</div>
+            </div>
+          </div>
+
+          <div class="evidence-grid">
+            <div class="evidence-panel">
+              <div class="panel-title">Why performance beat plan</div>
+              <p class="panel-subtitle">Net-income variance bridge, USD thousands</p>
+              <div class="bridge" role="img" aria-label="Budget net income 22.9 thousand plus favorable revenue 3.2, COGS 3.2, operating expense 1.5, and other 0.1 equals actual net income 30.9 thousand">
+                <div class="bridge-col"><div class="bridge-value">$22.9</div><div class="bridge-bar base" style="height:74%"></div><div class="bridge-label">Budget net income</div></div>
+                <div class="bridge-col"><div class="bridge-value">+$3.2</div><div class="bridge-bar" style="height:26%"></div><div class="bridge-label">Revenue</div></div>
+                <div class="bridge-col"><div class="bridge-value">+$3.2</div><div class="bridge-bar" style="height:26%"></div><div class="bridge-label">COGS</div></div>
+                <div class="bridge-col"><div class="bridge-value">+$1.5</div><div class="bridge-bar" style="height:13%"></div><div class="bridge-label">Operating expense</div></div>
+                <div class="bridge-col"><div class="bridge-value">+$0.1</div><div class="bridge-bar" style="height:4%"></div><div class="bridge-label">Other + tax</div></div>
+                <div class="bridge-col"><div class="bridge-value">$30.9</div><div class="bridge-bar actual" style="height:100%"></div><div class="bridge-label">Actual net income</div></div>
+              </div>
+              <div class="bridge-note">Revenue and COGS account for 80% of the favorable variance.</div>
+            </div>
+
+            <div class="evidence-panel">
+              <div class="panel-title">Attention: collections headroom is narrow</div>
+              <p class="panel-subtitle">Outstanding value as a share of Q4 invoiced value</p>
+              <div class="threshold-row"><span>Actual 14.7%</span><span>0.3pp headroom</span></div>
+              <div class="threshold-track" role="img" aria-label="Outstanding invoice percentage 14.7 compared with 15 percent threshold"><div class="threshold-fill"></div><div class="threshold-marker"></div></div>
+              <ul class="exposure-list">
+                <li><span>River Goods / Wholesale</span><strong>$8.4K</strong></li>
+                <li><span>Harbor Market / Online</span><strong>$6.1K</strong></li>
+                <li><span>Maple Wholesale / Wholesale</span><strong>$5.7K</strong></li>
+                <li><span>Vista Trading / Online</span><strong>$3.6K</strong></li>
+              </ul>
+              <p class="quality-note"><strong>Evidence limit:</strong> Aging is unavailable until six paid-before-invoice records are corrected or explained.</p>
+            </div>
+          </div>
+          <div class="brief-footer"><span>Outlook unavailable: forecast and longer actual history not supplied.</span><a class="detail-link" href="#detail">Open finance detail &gt;</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="teardown" aria-labelledby="teardown-title">
+      <div class="container reveal">
+        <p class="eyebrow">01 / Current state teardown</p>
+        <h2 id="teardown-title">A capable analyst report wearing executive clothes</h2>
+        <p class="lede">The dashboard answers what happened, but not what is material, what drove it, or what it means for the next leadership cycle.</p>
+        <div class="comparison-grid">
+          <figure class="screenshot-frame">
+            <img src="../inputs/screenshots/P%26L_Report_Overview.png" alt="Current P and L overview with equal-weight KPI cards, charts, and payment status treemap">
+            <figcaption>Overview: eight equal-weight KPIs, a broad date slider, dual-purpose trend charts, and an unlabeled payment-status treemap.</figcaption>
+          </figure>
+          <figure class="screenshot-frame">
+            <img src="../inputs/screenshots/P%26L_Report_2_Detail.png" alt="Current detailed P and L matrix with quarters across columns and account rows">
+            <figcaption>Detail: useful for reconciliation, but too dense for the leadership landing page and missing budget variance and materiality.</figcaption>
+          </figure>
+        </div>
+
+        <div class="score-row"><strong>What</strong><div class="score-track"><div class="score-fill" style="width:67%"></div></div><span>2 / 3</span></div>
+        <div class="score-row"><strong>So What</strong><div class="score-track"><div class="score-fill" style="width:33%"></div></div><span>1 / 3</span></div>
+        <div class="score-row"><strong>Now What</strong><div class="score-track"><div class="score-fill" style="width:0%"></div></div><span>0 / 3</span></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Observed issue</th><th>Why it matters</th><th>Redesign response</th></tr></thead>
+            <tbody>
+              <tr><td>Eight KPI cards share equal prominence</td><td>Leaders must decide what matters before interpreting it</td><td>One dominant net-income outcome with three subordinate measures</td></tr>
+              <tr><td>Previous-period comparison is primary</td><td>It does not answer whether the approved plan is being delivered</td><td>Budget becomes primary; Q3 is secondary where it changes interpretation</td></tr>
+              <tr><td>Topical chart titles and no annotations</td><td>The audience must find and explain the movement</td><td>Conclusion-led headline and directly labeled variance bridge</td></tr>
+              <tr><td>Payment treemap lacks values and threshold</td><td>Area cannot communicate proximity, aging, or concentration reliably</td><td>Threshold bar, headroom, ranked customers, and evidence caveat</td></tr>
+              <tr><td>Dense matrix on the main workflow</td><td>Operational detail overwhelms executive curation</td><td>Preserve it as a separate, context-carrying finance detail view</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="recommendations" aria-labelledby="recommendations-title">
+      <div class="container reveal">
+        <p class="eyebrow">02 / Redesign recommendations</p>
+        <h2 id="recommendations-title">Outcome, context, driver, implication</h2>
+        <p class="lede">The executive insight contract turns the current collection of visuals into a curated narrative. Each layer has a distinct job.</p>
+        <div class="wsn-grid">
+          <article class="wsn-item"><div class="wsn-number">01 / WHAT</div><h3>$30.9K net income</h3><p>State the latest result as a governed comparison: $8.0K, or 35.1%, above the approved quarterly budget.</p></article>
+          <article class="wsn-item"><div class="wsn-number">02 / SO WHAT</div><h3>Two drivers explain most of the result</h3><p>Revenue and COGS each added roughly $3.2K favorable variance and together explain 80% of the plan beat.</p></article>
+          <article class="wsn-item"><div class="wsn-number">03 / NOW WHAT</div><h3>Protect cash conversion</h3><p>Keep collections on the attention agenda: 14.7% is inside tolerance, but only by 0.3 percentage points.</p></article>
+        </div>
+
+        <div class="table-wrap" id="detail">
+          <table>
+            <thead><tr><th>Surface</th><th>Keep</th><th>Change</th></tr></thead>
+            <tbody>
+              <tr><td>Briefing header</td><td>Reporting-period context</td><td>Add cycle, scope, units, data status, refresh, and the central conclusion</td></tr>
+              <tr><td>Enterprise outcomes</td><td>Revenue, gross profit, operating expense, net income</td><td>Use plan variance, governed directionality, and limited secondary context</td></tr>
+              <tr><td>Driver evidence</td><td>Cost and profitability evidence</td><td>Replace stacked and dual-axis charts with a reconciled net-income bridge</td></tr>
+              <tr><td>Collections</td><td>Payment risk as supporting context</td><td>Show threshold proximity and concentration; defer aging until quality is resolved</td></tr>
+              <tr><td>Finance detail</td><td>Expandable P&amp;L hierarchy</td><td>Add Actual, Budget, Variance, Variance %, prior period, and materiality filter</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="model" aria-labelledby="model-title">
+      <div class="container reveal">
+        <p class="eyebrow">03 / Proposed data model</p>
+        <h2 id="model-title">Separate grains, conformed meaning, reproducible briefings</h2>
+        <p class="lede">Transactions, quarterly plans, invoices, KPI thresholds, and executive snapshots cannot safely live at one grain. The model preserves each fact and joins them through governed dimensions.</p>
+        <div class="model-grid">
+          <div class="diagram" aria-label="Entity relationship diagram for the P and L executive dashboard">
+            <div class="diagram-title">Dimensional architecture</div>
+            <pre class="mermaid">
+erDiagram
+  DIM_DATE ||--o{ FACT_GL_TRANSACTION : posts
+  DIM_REPORTING_CYCLE ||--o{ FACT_GL_TRANSACTION : classifies
+  DIM_PL_LINE ||--o{ DIM_ACCOUNT : groups
+  DIM_ACCOUNT ||--o{ FACT_GL_TRANSACTION : records
+  DIM_ENTITY ||--o{ FACT_GL_TRANSACTION : owns
+  DIM_CURRENCY ||--o{ FACT_GL_TRANSACTION : denominates
+  DIM_REPORTING_CYCLE ||--o{ FACT_FINANCIAL_PLAN : targets
+  DIM_PL_LINE ||--o{ FACT_FINANCIAL_PLAN : plans
+  DIM_SCENARIO ||--o{ FACT_FINANCIAL_PLAN : versions
+  DIM_REPORTING_CYCLE ||--o{ FACT_KPI_TARGET : governs
+  DIM_METRIC ||--o{ FACT_KPI_TARGET : defines
+  DIM_DATE ||--o{ FACT_INVOICE : dates
+  DIM_CUSTOMER ||--o{ FACT_INVOICE : billed_to
+  FACT_INVOICE ||--o{ FACT_AR_SNAPSHOT : snapshots
+  DIM_REPORTING_CYCLE ||--o{ FACT_AR_SNAPSHOT : freezes
+  DIM_REPORTING_CYCLE ||--o{ MART_EXECUTIVE_PNL_SNAPSHOT : publishes
+  DIM_METRIC ||--o{ MART_EXECUTIVE_PNL_SNAPSHOT : reports
+  DIM_REPORTING_CYCLE ||--o{ FACT_EXECUTIVE_INSIGHT : contextualizes
+  DIM_METRIC ||--o{ FACT_EXECUTIVE_INSIGHT : explains
+            </pre>
+          </div>
+          <div class="model-notes">
+            <div class="note-block"><h3>Grain first</h3><p>Actual transactions roll to quarter before comparison with quarterly budget. No direct transaction-to-target join is permitted.</p></div>
+            <div class="note-block"><h3>Ratios stay non-additive</h3><p>Gross and net margin are recomputed from summed numerators and denominators. They are never summed or averaged.</p></div>
+            <div class="note-block"><h3>Cycles are immutable</h3><p>Each publication pins data, plan, metric, commentary, and calculation versions so a past briefing can be reproduced.</p></div>
+            <div class="note-block"><h3>Receivables need snapshots</h3><p>Cumulative paid amounts cannot recreate historical aging. Payment events and governed as-of snapshots are production requirements.</p></div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Current gap</th><th>Business consequence</th><th>Required source or control</th></tr></thead>
+            <tbody>
+              <tr><td>No entity or currency</td><td>Scope and unit cannot be certified</td><td>Legal/management entity, transaction currency, reporting currency, FX version</td></tr>
+              <tr><td>Only 2020 Q2-Q4 actuals</td><td>No reproducible year-over-year or structural trend</td><td>Comparable historical GL and invoice actuals</td></tr>
+              <tr><td>No forecast or scenarios</td><td>Outlook cannot be stated</td><td>Approved forecast versions, assumptions, and confidence</td></tr>
+              <tr><td>No revenue attribution</td><td>Customer/product revenue causality cannot be claimed</td><td>Governed GL-to-invoice/customer/product mapping</td></tr>
+              <tr><td>No metric ownership or certification</td><td>Executive trust and accountability remain implicit</td><td>Owner, steward, definition version, refresh, reconciliation, certification</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="flow" aria-labelledby="flow-title">
+      <div class="container reveal">
+        <p class="eyebrow">04 / Data flow specification</p>
+        <h2 id="flow-title">Validate daily. Freeze at close. Publish by version.</h2>
+        <p class="lede">The operational pipeline can refresh frequently, but the executive briefing should change only through a controlled reporting-cycle publication.</p>
+        <div class="flow" aria-label="Data flow stages">
+          <div class="flow-step">Source landing</div>
+          <div class="flow-step">Schema and key validation</div>
+          <div class="flow-step">Conformed facts and dimensions</div>
+          <div class="flow-step">Quarter aggregation</div>
+          <div class="flow-step certify">Reconcile and certify</div>
+          <div class="flow-step">Review commentary</div>
+          <div class="flow-step publish">Versioned publication</div>
+        </div>
+
+        <ul class="risk-list">
+          <li><span class="risk-label">Quality gate</span><span>Six paid-before-invoice records are quarantined from aging and payment-timeliness measures. They are not silently corrected.</span></li>
+          <li><span class="risk-label">Reconciliation gate</span><span>The variance bridge must start at budget net income and finish at certified actual net income within $0.01.</span></li>
+          <li><span class="risk-label">Semantic gate</span><span>Directionality is governed by metric and P&amp;L line; lower expense is favorable even when raw arithmetic signs are negative.</span></li>
+          <li><span class="risk-label">Publication gate</span><span>Late corrections create a new restated reporting-cycle version and preserve the prior briefing.</span></li>
+          <li><span class="risk-label">Narrative gate</span><span>Published commentary must reference the same metric, plan, cycle, and calculation versions visible to the reader.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap" aria-labelledby="roadmap-title">
+      <div class="container reveal">
+        <p class="eyebrow">Delivery roadmap</p>
+        <h2 id="roadmap-title">Build trust before adding breadth</h2>
+        <p class="lede">The fastest credible path starts with a reconciled P&amp;L semantic layer, then adds receivables and forward-looking evidence only when their source controls are ready.</p>
+        <div class="roadmap-grid">
+          <article class="roadmap-step"><div class="phase">Phase 1</div><h3>Govern the close</h3><p>Confirm fiscal calendar, scope, currency, signs, plan version, metric definitions, materiality, and certification roles.</p></article>
+          <article class="roadmap-step"><div class="phase">Phase 2</div><h3>Ship the P&amp;L brief</h3><p>Build actual versus budget, margin measures, the reconciled bridge, immutable snapshots, and finance detail.</p></article>
+          <article class="roadmap-step"><div class="phase">Phase 3</div><h3>Repair collections evidence</h3><p>Resolve date anomalies, source payment events, define the cohort and as-of rules, then certify AR snapshots.</p></article>
+          <article class="roadmap-step"><div class="phase">Phase 4</div><h3>Add outlook</h3><p>Backfill comparable actuals and integrate approved forecast/scenario data before adding trajectory claims.</p></article>
+        </div>
+        <div class="reference-note"><strong>Acceptance test:</strong> In under one minute, a leader should be able to state the material P&amp;L result, its two largest drivers, the collections implication, and the limits of the evidence without opening a filter or decoding a chart.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container"><span>P&amp;L Dashboard Redesign / Executive + Insight-Driven</span><span>Markdown stages 01-04 are the source of truth.</span></div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        securityLevel: 'loose',
+        themeVariables: {
+          primaryColor: '#edf4ef',
+          primaryTextColor: '#17211c',
+          primaryBorderColor: '#145f52',
+          lineColor: '#667069',
+          secondaryColor: '#edf3f8',
+          tertiaryColor: '#fff0dc',
+          fontFamily: 'Trebuchet MS, Verdana, sans-serif'
+        }
+      });
+    }
+
+    const cycle = document.querySelector('#cycle');
+    cycle.addEventListener('change', () => {
+      if (cycle.value !== '2020 Q4 close') {
+        window.alert('Only the 2020 Q4 evidence packet is published in this prototype.');
+        cycle.value = '2020 Q4 close';
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
+  </script>
+</body>
+</html>

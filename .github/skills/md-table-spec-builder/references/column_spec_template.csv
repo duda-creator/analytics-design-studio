@@ -1,0 +1,4 @@
+Source Extract,Source Column,Target Table,Target Column Name,Type,Business Role,Format,Primary/Unique Key,PII/Sensitivity,Allowed Values,Rejected Values,Description,Notes,Status
+cash_positions_2026Q2.csv,Acct_Num,stg_cash_positions_2026Q2,account_number,Mandatory,Degenerate Dimension,STRING(20),Y,Confidential,,,Unique account identifier from source ledger,Zero-padded in source; confirm whether to strip leading zeros,Draft
+cash_positions_2026Q2.csv,Bal_Amt,stg_cash_positions_2026Q2,balance_amount,Mandatory,Measure,"DECIMAL(18,2)",N,None,,,End-of-day account balance in reporting currency,Confirm currency conversion already applied upstream,Draft
+,,,,,,,,,,,,

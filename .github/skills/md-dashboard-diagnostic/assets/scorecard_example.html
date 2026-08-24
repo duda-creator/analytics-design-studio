@@ -1,0 +1,266 @@
+<!--
+  DESIGN REFERENCE — read before building a new scorecard.
+
+  This is a worked example (an Operational dashboard currently sitting at
+  Snapshot, target Insight-Driven) — not a fill-in-the-blanks template.
+  Reuse the visual language (instrument-panel / schematic aesthetic, the
+  type-matrix strip, the vertical depth gauge with current/target markers
+  and a gap connector, the chip lists) but write fresh copy and resize
+  sections to fit what the diagnosis actually found. Notably:
+    - Adjust the three type-matrix cards' DETECTED/TARGET tags to whichever
+      cards actually apply (they may be the same card, or type may be mixed —
+      in which case tag both with a "MIXED" note instead of forcing one).
+    - For an ANALYTICAL diagnosis, delete the depth-gauge <section> entirely
+      and replace it with a horizontal flag-audit bar (comparison+insight %
+      vs. raw %) — the ladder does not apply to Analytical.
+    - The gap connector's length/label should reflect the actual rung
+      distance (0 rungs = "on target", shown in the accent green, no dashes).
+-->
+<div class="dd-scorecard">
+  <style>
+    .dd-scorecard {
+      --bg: #0b1220;
+      --grid-line: rgba(143, 163, 192, 0.06);
+      --card: #121b2e;
+      --card-border: #24344f;
+      --text-primary: #e8edf5;
+      --text-secondary: #8fa3c0;
+      --mono: ui-monospace, "SFMono-Regular", "IBM Plex Mono", Menlo, Consolas, monospace;
+      --sans: ui-sans-serif, Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+
+      --c-microscope: #4fd1c5;
+      --c-cockpit: #f5a623;
+      --c-radar: #34d399;
+
+      --status-good: #34d399;
+      --status-warn: #f5a623;
+      --status-bad: #f87171;
+
+      background: var(--bg);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 28px 28px;
+      color: var(--text-primary);
+      font-family: var(--sans);
+      padding: 32px;
+      border-radius: 12px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .dd-scorecard * { box-sizing: border-box; }
+
+    .dd-eyebrow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      margin: 0 0 6px;
+    }
+    .dd-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    .dd-title { font-size: 22px; font-weight: 650; margin: 0; letter-spacing: -0.01em; }
+    .dd-sub { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); margin-top: 6px; }
+
+    .dd-verdict {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      border: 1px solid currentColor;
+    }
+    .dd-verdict.warn { color: var(--status-warn); background: rgba(245, 166, 35, 0.1); }
+    .dd-verdict.good { color: var(--status-good); background: rgba(52, 211, 153, 0.1); }
+    .dd-verdict.bad  { color: var(--status-bad);  background: rgba(248, 113, 113, 0.1); }
+
+    .dd-section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin: 0 0 12px;
+    }
+
+    /* Type matrix strip */
+    .dd-types {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .dd-type-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 14px;
+      position: relative;
+    }
+    .dd-type-card.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .dd-type-card .icon { font-size: 18px; }
+    .dd-type-card .name { font-weight: 600; font-size: 14px; margin: 6px 0 1px; }
+    .dd-type-card .desc { font-size: 11px; font-style: italic; color: var(--text-secondary); margin: 0 0 6px; }
+    .dd-type-card .q { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+    .dd-tag {
+      position: absolute;
+      top: -9px;
+      right: 10px;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #0b1220;
+      font-weight: 700;
+    }
+
+    /* Depth gauge — vertical stepper, Data Storytelling at top (highest rung) down to Snapshot */
+    .dd-gauge-wrap {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 24px 20px 20px;
+      margin-bottom: 28px;
+    }
+    .dd-ladder { list-style: none; margin: 0; padding: 0; }
+    .dd-rung {
+      position: relative;
+      padding-left: 30px;
+      padding-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 20px;
+    }
+    .dd-rung:last-child { padding-bottom: 0; }
+    .dd-rung::before {
+      content: ''; position: absolute; left: 0; top: 2px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #3a4f70; border: 3px solid var(--card); z-index: 1;
+      box-sizing: content-box;
+    }
+    .dd-rung::after {
+      content: ''; position: absolute; left: 6px; top: 18px; bottom: -12px;
+      width: 2px; background: #3a4f70;
+    }
+    .dd-rung:last-child::after { display: none; }
+    .dd-rung.in-gap::after { background: var(--status-warn); }
+    .dd-rung.current::before { background: var(--status-warn); box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.18); }
+    .dd-rung.target::before { background: var(--card); border-color: var(--status-good); }
+
+    .dd-rung-name { font-family: var(--mono); font-size: 13px; color: var(--text-secondary); }
+    .dd-rung-name .paren { font-size: 11px; }
+    .dd-rung.current .dd-rung-name,
+    .dd-rung.target .dd-rung-name { color: var(--text-primary); font-weight: 700; }
+    .dd-marker {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
+      padding: 2px 8px; border-radius: 999px; font-weight: 700;
+    }
+    .dd-marker.current { background: var(--status-warn); color: #0b1220; }
+    .dd-marker.target { border: 1px dashed var(--status-good); color: var(--status-good); }
+    .dd-gap-note {
+      font-family: var(--mono); font-size: 11px; color: var(--status-warn);
+      margin-top: 6px; padding-top: 16px; border-top: 1px dashed var(--card-border);
+    }
+
+    /* Chip lists */
+    .dd-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .dd-chip {
+      display: flex; gap: 8px; align-items: flex-start;
+      font-size: 13px; line-height: 1.4; padding: 8px 0;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .dd-chip:last-child { border-bottom: none; }
+    .dd-chip .mark { flex-shrink: 0; font-family: var(--mono); font-size: 12px; margin-top: 1px; }
+    .dd-chip.good .mark { color: var(--status-good); }
+    .dd-chip.gap .mark { color: var(--status-warn); }
+
+    /* Pitfall footer */
+    .dd-footer {
+      font-family: var(--mono); font-size: 12px; color: var(--text-secondary);
+      border-top: 1px solid var(--card-border); padding-top: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .dd-footer.flag { color: var(--status-bad); }
+  </style>
+
+  <div class="dd-header">
+    <div>
+      <p class="dd-eyebrow">Dashboard Diagnostic</p>
+      <h1 class="dd-title">Trade Finance Weekly Ops View</h1>
+      <p class="dd-sub">Detected: Operational (Cockpit) · Snapshot &nbsp;→&nbsp; Target: Operational (Cockpit) · Insight-Driven (framework default)</p>
+    </div>
+    <span class="dd-verdict warn">Under-built</span>
+  </div>
+
+  <p class="dd-section-label">Dashboard Type</p>
+  <div class="dd-types">
+    <div class="dd-type-card" style="--accent: var(--c-microscope);">
+      <div class="icon">🔬</div>
+      <div class="name">Analytical</div>
+      <div class="desc">the Microscope</div>
+      <div class="q">"Why did this happen?" — record-level, free-form slicing.</div>
+    </div>
+    <div class="dd-type-card active" style="--accent: var(--c-cockpit);">
+      <span class="dd-tag">Detected</span>
+      <div class="icon">🎛️</div>
+      <div class="name">Operational</div>
+      <div class="desc">the Cockpit</div>
+      <div class="q">"How's my business doing this week?" — rolled up, fixed cadence.</div>
+    </div>
+    <div class="dd-type-card" style="--accent: var(--c-radar);">
+      <div class="icon">📡</div>
+      <div class="name">Executive</div>
+      <div class="desc">the Radar</div>
+      <div class="q">"What do I need to know right now?" — headline only.</div>
+    </div>
+  </div>
+
+  <p class="dd-section-label">Decision Depth Ladder</p>
+  <div class="dd-gauge-wrap">
+    <!-- Order is always Data Storytelling (top) → Snapshot (bottom) — a ladder
+         you climb upward. Add class "in-gap" to every rung whose connector
+         line sits between current and target; add "current" / "target" to
+         the two endpoint rungs (they can be the same rung — see gap note below). -->
+    <ol class="dd-ladder">
+      <li class="dd-rung"><span class="dd-rung-name">Data Storytelling <span class="paren">(Pitch)</span></span></li>
+      <li class="dd-rung"><span class="dd-rung-name">Decision-Driven <span class="paren">(Prescription)</span></span></li>
+      <li class="dd-rung in-gap target">
+        <span class="dd-rung-name">Insight-Driven <span class="paren">(Diagnosis)</span></span>
+        <span class="dd-marker target">Target</span>
+      </li>
+      <li class="dd-rung current">
+        <span class="dd-rung-name">Snapshot <span class="paren">(Pulse Check)</span></span>
+        <span class="dd-marker current">Current</span>
+      </li>
+    </ol>
+    <p class="dd-gap-note">Gap: 1 rung — no comparison point or "why" sentence on any tile</p>
+  </div>
+
+  <div class="dd-lists">
+    <div>
+      <p class="dd-section-label">Strengths</p>
+      <div class="dd-chip good"><span class="mark">✓</span><span>Settlement fails and limit utilization are rolled up cleanly, matching Operational granularity — not trade-level noise, not over-abstracted.</span></div>
+      <div class="dd-chip good"><span class="mark">✓</span><span>Fixed weekly cadence is stated on-screen ("as of Mon 08:00"), matching the cadence expectation for this type.</span></div>
+    </div>
+    <div>
+      <p class="dd-section-label">Gaps vs. Operational · Insight-Driven</p>
+      <div class="dd-chip gap"><span class="mark">△</span><span>No tile shows a comparison point (last week, target, or peer) — every number stands alone.</span></div>
+      <div class="dd-chip gap"><span class="mark">△</span><span>No plain-English "why it moved" sentence anywhere on the page — colors only.</span></div>
+    </div>
+  </div>
+
+  <div class="dd-footer">✓ No pitfalls observed</div>
+</div>

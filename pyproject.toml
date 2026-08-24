@@ -1,0 +1,12 @@
+[project]
+name = "analytics-design-studio"
+version = "0.1.0"
+description = "Tech-agnostic workflow for diagnosing, redesigning and prototyping analytics dashboards"
+readme = "README.md"
+requires-python = ">=3.12"
+# Intentionally empty: every skill script in this repo is standard library only.
+dependencies = []
+
+[dependency-groups]
+dev = []
+

@@ -1,0 +1,13 @@
+account_id,account_name,pl_section,cost_category,normal_sign
+REV-100,Revenue,Revenue,,1
+COGS-100,Cost of Goods Sold,COGS,Other,-1
+COGS-200,Shipping Expenses,COGS,Shipping,-1
+COGS-300,Credit Card Fees,COGS,Transactions,-1
+OPEX-100,Advertising,Operating Expense,Marketing,-1
+OPEX-200,Salaries and Wages,Operating Expense,Other,-1
+OPEX-300,Phone and Internet,Operating Expense,Other,-1
+OPEX-400,Website Expenses,Operating Expense,Marketing,-1
+OPEX-500,Depreciation Expenses,Operating Expense,Other,-1
+OPEX-600,Office Supplies,Operating Expense,Other,-1
+OEXP-100,Other Expenses,Other Expense,Other,-1
+TAX-100,Income Tax,Tax,,-1

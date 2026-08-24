@@ -1,0 +1,23 @@
+customer_id,customer_name,segment,signup_date
+CUST-001,Stone Outfitters,Online,2019-03-15
+CUST-002,Harbor Market,Online,2018-03-25
+CUST-003,Coastal Mercantile,Retail,2019-09-18
+CUST-004,Blue Outfitters,Online,2017-08-01
+CUST-005,Harbor Goods,Retail,2020-07-01
+CUST-006,North Retail Group,Wholesale,2020-04-13
+CUST-007,Blue Goods,Wholesale,2019-03-19
+CUST-008,Cedar Mercantile,Online,2020-07-06
+CUST-009,Harbor Mercantile,Retail,2019-09-20
+CUST-010,Copper Supply Co,Online,2018-12-04
+CUST-011,River Goods,Wholesale,2018-08-26
+CUST-012,Summit Distribution,Online,2018-09-06
+CUST-013,Pine Wholesale,Retail,2020-07-26
+CUST-014,Silver Collective,Wholesale,2019-04-21
+CUST-015,Harbor Outfitters,Online,2019-12-25
+CUST-016,Silver Collective,Retail,2017-09-09
+CUST-017,Meridian Retail Group,Retail,2018-10-04
+CUST-018,Vista Trading,Online,2019-03-12
+CUST-019,North Market,Wholesale,2017-08-25
+CUST-020,Maple Wholesale,Wholesale,2017-11-11
+CUST-021,Blue Distribution,Wholesale,2020-11-06
+CUST-022,Stone Outfitters,Retail,2017-09-20

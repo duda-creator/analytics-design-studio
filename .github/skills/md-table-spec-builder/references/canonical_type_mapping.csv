@@ -1,0 +1,10 @@
+Canonical Type,Postgres / DuckDB,Databricks,Snowflake,Notes
+STRING(n),VARCHAR(n),STRING,VARCHAR(n),Databricks STRING has no length limit; treat n as documentation only
+TEXT,TEXT,STRING,VARCHAR,Use for unbounded free text
+INTEGER,INTEGER,INT,INTEGER,
+BIGINT,BIGINT,BIGINT,BIGINT,
+"DECIMAL(p,s)","DECIMAL(p,s)","DECIMAL(p,s)","NUMBER(p,s)",Snowflake's native numeric type is NUMBER; DECIMAL is accepted as a synonym
+BOOLEAN,BOOLEAN,BOOLEAN,BOOLEAN,
+DATE,DATE,DATE,DATE,
+TIMESTAMP,TIMESTAMP,TIMESTAMP,TIMESTAMP_NTZ,No timezone stored
+TIMESTAMP_TZ,TIMESTAMPTZ,TIMESTAMP,TIMESTAMP_TZ,Timezone-aware; verify Databricks TIMESTAMP semantics against your workspace's timezone settings

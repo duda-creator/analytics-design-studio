@@ -1,0 +1,134 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# DotEnv configuration
+.env
+
+# Database
+*.db
+*.rdb
+
+# Pycharm
+.idea
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Spyder
+.spyproject/
+
+# Jupyter NB Checkpoints
+.ipynb_checkpoints/
+
+# Mac OS-specific storage files
+.DS_Store
+
+# vim
+*.swp
+*.swo
+
+# Mypy cache
+.mypy_cache/
+
+# Exclude virtual environment
+.venv/
+
+# Exclude trained models
+/models/
+
+# Keep data folder structure, ignore extracted datasets/artifacts
+/data/**
+!/data/**/
+
+# Ignore extract storage areas
+/data/databases/**
+/data/external/**
+/data/interim/**
+/data/processed/**
+/data/profiling/**
+/data/raw/**
+
+# Keep placeholder files so directory structure stays in Git
+!/data/databases/**/
+!/data/external/**/
+!/data/interim/**/
+!/data/processed/**/
+!/data/profiling/**/
+!/data/raw/**/
+!/data/databases/**/.gitkeep
+!/data/external/**/.gitkeep
+!/data/interim/**/.gitkeep
+!/data/processed/**/.gitkeep
+!/data/profiling/**/.gitkeep
+!/data/raw/**/.gitkeep
+
+# Keep versioned, authored assets under data
+!/data/ddl/**
+!/data/spec/**
+
+# Keep the Treasury sample extracts that ship with the template
+!/data/external/Treasury/**
+
+# exclude generated reports from source control by default
+/reports/
+!/reports/**/.gitkeep
+
+# keep scripts placeholder files so directory structure stays in Git
+!/scripts/**/.gitkeep
+
