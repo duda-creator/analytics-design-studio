@@ -23,7 +23,7 @@ Docker, no `pip install`.
 | 4 | `md-dashboard-datamap` *(pending)* | `07-datamap.md`, `08-target-spec/*.spec.csv` |
 | 5 | `scripts/generate_fixture_data.py` *(pending)* | `fixtures/*.csv`, `fixtures/_provenance.md` |
 | 6 | POC build | prototype dashboard |
-| 7 | Sign-off + ADR | `references/adr/0001-technology-selection.md` |
+| 7 | Sign-off + Architecture Decision Record (ADR) | `references/adr/0001-technology-selection.md` |
 
 Steps 2-5 are not yet implemented. Steps 0-1 are.
 
