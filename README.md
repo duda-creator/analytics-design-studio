@@ -12,6 +12,49 @@ delivery kit can be entered directly when the platform is already agreed.
 Python 3.12. Nothing else — every script in this repo is standard library only. No database, no
 Docker, no `pip install`.
 
+## Quick Start
+
+Create a new repository from this template, replacing `my-dashboard-project` with your project
+name:
+
+```powershell
+gh repo create duda-creator/my-dashboard-project `
+  --template duda-creator/analytics-design-studio `
+  --public
+gh repo clone duda-creator/my-dashboard-project
+cd my-dashboard-project
+code .
+```
+
+Use `--private` instead of `--public` when the project should not be publicly visible. Confirm that
+Python 3.12 is available:
+
+```powershell
+python --version
+```
+
+Add dashboard inputs under `dashboards/<name>/inputs/`:
+
+```text
+dashboards/
+  MyDashboard/
+    inputs/
+      requirements/
+      sample_data/
+      screenshots/
+```
+
+`dashboards/PNL_Dashboard/` is a worked example. Start with `md-dashboard-diagnostic`, then run
+`md-dashboard-redesign`. Steps 2-5 in the workflow are currently pending.
+
+Commit and push your project when ready:
+
+```powershell
+git add .
+git commit -m "Initialize dashboard project"
+git push
+```
+
 ## Workflow
 
 | Step | Skill | Output |
