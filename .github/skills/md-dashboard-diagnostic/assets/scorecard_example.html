@@ -4,9 +4,10 @@
   This is a worked example (an Operational dashboard currently sitting at
   Snapshot, target Insight-Driven) — not a fill-in-the-blanks template.
   Reuse the visual language (instrument-panel / schematic aesthetic, the
-  type-matrix strip, the vertical depth gauge with current/target markers
-  and a gap connector, the chip lists) but write fresh copy and resize
-  sections to fit what the diagnosis actually found. Notably:
+  type-matrix strip, the vertical Decision Support Depth gauge with rung
+  icons, current/target markers and a gap connector, the chip lists) but
+  write fresh copy and resize sections to fit what the diagnosis actually
+  found. Notably:
     - Adjust the three type-matrix cards' DETECTED/TARGET tags to whichever
       cards actually apply (they may be the same card, or type may be mixed —
       in which case tag both with a "MIXED" note instead of forcing one).
@@ -15,6 +16,15 @@
       vs. raw %) — the ladder does not apply to Analytical.
     - The gap connector's length/label should reflect the actual rung
       distance (0 rungs = "on target", shown in the accent green, no dashes).
+    - Any recommended climb must carry its Engagement Ladder price: keep the
+      engagement note under the gap note, restating what the business brings
+      at the TARGET rung (the framework's "Unfunded Depth Request" guard).
+      Drop it only when current = target.
+    - If the target rung is Decision-Driven, also confirm authority: name the
+      decision owner in the engagement note, or flag the Authority Gap
+      pitfall in the footer if the viewer doesn't hold the trigger.
+    - Data Storytelling stays visually marked as the opt-in layer — never
+      set it as a target unless explicitly requested.
 -->
 <div class="dd-scorecard">
   <style>
@@ -35,6 +45,7 @@
       --status-good: #34d399;
       --status-warn: #f5a623;
       --status-bad: #f87171;
+      --amber: #f5a623; /* accent fill inside the depth-rung symbols */
 
       background: var(--bg);
       background-image:
@@ -164,6 +175,18 @@
     .dd-rung-name .paren { font-size: 11px; }
     .dd-rung.current .dd-rung-name,
     .dd-rung.target .dd-rung-name { color: var(--text-primary); font-weight: 700; }
+    .dd-depth-icon {
+      width: 16px; height: 16px; flex-shrink: 0;
+      color: var(--text-secondary);
+    }
+    .dd-rung.current .dd-depth-icon,
+    .dd-rung.target .dd-depth-icon { color: var(--text-primary); }
+    .dd-optin {
+      font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-secondary);
+      border: 1px dashed var(--card-border); border-radius: 999px;
+      padding: 2px 7px;
+    }
     .dd-marker {
       font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em;
       padding: 2px 8px; border-radius: 999px; font-weight: 700;
@@ -174,6 +197,11 @@
       font-family: var(--mono); font-size: 11px; color: var(--status-warn);
       margin-top: 6px; padding-top: 16px; border-top: 1px dashed var(--card-border);
     }
+    .dd-engagement-note {
+      font-family: var(--mono); font-size: 11px; color: var(--text-secondary);
+      line-height: 1.5; margin-top: 8px;
+    }
+    .dd-engagement-note strong { color: var(--text-primary); font-weight: 700; }
 
     /* Chip lists */
     .dd-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
@@ -195,6 +223,34 @@
     }
     .dd-footer.flag { color: var(--status-bad); }
   </style>
+
+  <!-- Depth-rung icon sprite — shared symbols from the framework HTML
+       (i-pulse / i-bulb / i-scales / i-board = Snapshot / Insight-Driven /
+       Decision-Driven / Data Storytelling). Keep ids stable. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="i-pulse" viewBox="0 0 24 24">
+        <path d="M2.5 13h5.5l2.5-6 2.5 10 2-4h3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="21" cy="13" r="1.8" fill="var(--amber)"/>
+      </symbol>
+      <symbol id="i-bulb" viewBox="0 0 24 24">
+        <path d="M12 2.5a6 6 0 0 1 6 6c0 2.2-1.1 3.4-2.1 4.5-.6.7-.9 1.5-.9 2.5h-6c0-1-.3-1.8-.9-2.5C7.1 11.9 6 10.7 6 8.5a6 6 0 0 1 6-6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        <path d="M10 19h4M10.8 21.5h2.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+        <path d="M10.3 8.2l1.7 1.7 1.7-1.7" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-scales" viewBox="0 0 24 24">
+        <path d="M12 4.5v15M8.5 19.5h7M5.5 6.5h13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+        <path d="M5.5 7 3.2 11.8M5.5 7l2.3 4.8M3.2 11.8a2.3 2.3 0 0 0 4.6 0M18.5 7l-2.3 4.8M18.5 7l2.3 4.8M16.2 11.8a2.3 2.3 0 0 0 4.6 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <circle cx="12" cy="6.5" r="1.6" fill="var(--amber)"/>
+      </symbol>
+      <symbol id="i-board" viewBox="0 0 24 24">
+        <rect x="4" y="3.5" width="16" height="11.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M9 15.5l-2.5 6M15 15.5l2.5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+        <path d="M7 12l3-2.5 2.3 1.3L16 7.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16.6" cy="7.1" r="1.5" fill="var(--amber)"/>
+      </symbol>
+    </defs>
+  </svg>
 
   <div class="dd-header">
     <div>
@@ -228,32 +284,44 @@
     </div>
   </div>
 
-  <p class="dd-section-label">Decision Depth Ladder</p>
+  <p class="dd-section-label">Decision Support Depth Ladder</p>
   <div class="dd-gauge-wrap">
     <!-- Order is always Data Storytelling (top) → Snapshot (bottom) — a ladder
          you climb upward. Add class "in-gap" to every rung whose connector
          line sits between current and target; add "current" / "target" to
-         the two endpoint rungs (they can be the same rung — see gap note below). -->
+         the two endpoint rungs (they can be the same rung — see gap note below).
+         Data Storytelling always keeps its opt-in tag — it is the optional
+         communication layer, never a default target. -->
     <ol class="dd-ladder">
-      <li class="dd-rung"><span class="dd-rung-name">Data Storytelling <span class="paren">(Pitch)</span></span></li>
-      <li class="dd-rung"><span class="dd-rung-name">Decision-Driven <span class="paren">(Prescription)</span></span></li>
+      <li class="dd-rung">
+        <svg class="dd-depth-icon"><use href="#i-board"/></svg>
+        <span class="dd-rung-name">Data Storytelling <span class="paren">(Pitch)</span></span>
+        <span class="dd-optin">Opt-in layer</span>
+      </li>
+      <li class="dd-rung">
+        <svg class="dd-depth-icon"><use href="#i-scales"/></svg>
+        <span class="dd-rung-name">Decision-Driven <span class="paren">(Prescription)</span></span>
+      </li>
       <li class="dd-rung in-gap target">
+        <svg class="dd-depth-icon"><use href="#i-bulb"/></svg>
         <span class="dd-rung-name">Insight-Driven <span class="paren">(Diagnosis)</span></span>
         <span class="dd-marker target">Target</span>
       </li>
       <li class="dd-rung current">
+        <svg class="dd-depth-icon"><use href="#i-pulse"/></svg>
         <span class="dd-rung-name">Snapshot <span class="paren">(Pulse Check)</span></span>
         <span class="dd-marker current">Current</span>
       </li>
     </ol>
     <p class="dd-gap-note">Gap: 1 rung — no comparison point or "why" sentence on any tile</p>
+    <p class="dd-engagement-note"><strong>Engagement to fund the climb</strong> (Insight-Driven · moderate): the business names which comparison matters (last week? target? peer?) and commits interpretation access — a named contributor validates the "why" sentence each cycle.</p>
   </div>
 
   <div class="dd-lists">
     <div>
       <p class="dd-section-label">Strengths</p>
       <div class="dd-chip good"><span class="mark">✓</span><span>Settlement fails and limit utilization are rolled up cleanly, matching Operational granularity — not trade-level noise, not over-abstracted.</span></div>
-      <div class="dd-chip good"><span class="mark">✓</span><span>Fixed weekly cadence is stated on-screen ("as of Mon 08:00"), matching the cadence expectation for this type.</span></div>
+      <div class="dd-chip good"><span class="mark">✓</span><span>Both cadences are stated on-screen: data refresh ("as of Mon 08:00") and the weekly review rhythm — freshness and consumption rhythm kept distinct, as the framework requires.</span></div>
     </div>
     <div>
       <p class="dd-section-label">Gaps vs. Operational · Insight-Driven</p>

@@ -10,7 +10,7 @@ A senior manager monitoring liquidity needs an immediate view of what has change
 
 Get the design wrong and the dashboard becomes either **too shallow to support analysis or too complex to support decisions.**
 
-This framework provides two complementary dimensions for diagnosing and designing analytical products: <br> **Dashboard Type** - who the product is designed for and how they interact with it, and <br> **Decision Depth** - how far the experience takes the user from simply seeing a status to understanding drivers and determining an appropriate action.
+This framework provides two complementary dimensions for diagnosing and designing analytical products: <br> **Dashboard Type** - who the product is designed for and how they interact with it, and <br> **Decision Support Depth** - how far the experience takes the user from simply seeing a status to understanding drivers and determining an appropriate action.
 
 **The principle is simple: design for the decision, not the data.**
 
@@ -42,7 +42,7 @@ Read top to bottom: first identify **who** the dashboard serves and how they use
           │                  │                  │
           └──────────────────┼──────────────────┘
                              │
-                     DECISION DEPTH
+                 DECISION SUPPORT DEPTH
                              │
                 ┌────────────┼────────────┐
                 │            │            │

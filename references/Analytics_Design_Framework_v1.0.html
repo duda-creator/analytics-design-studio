@@ -726,7 +726,7 @@
   <p>Every dashboard should answer a fundamental question: <strong>what does this audience need to know, and what do they need to be able to do with it?</strong></p>
   <p>A senior manager monitoring liquidity needs an immediate view of what has changed, where attention is required and whether action is needed. An analyst investigating a movement needs the ability to drill into drivers, compare periods, segment exposures and trace the number back to its underlying detail.</p>
   <p>Get the design wrong and the dashboard becomes either <strong>too shallow to support analysis or too complex to support decisions.</strong></p>
-  <p>This framework provides two complementary dimensions for diagnosing and designing analytical products: <strong>Dashboard Type</strong> &mdash; who the product is designed for and how they interact with it &mdash; and <strong>Decision Depth</strong> &mdash; how far the experience takes the user from simply seeing a status to understanding drivers and determining an appropriate action.</p>
+  <p>This framework provides two complementary dimensions for diagnosing and designing analytical products: <strong>Dashboard Type</strong> &mdash; who the product is designed for and how they interact with it &mdash; and <strong>Decision Support Depth</strong> &mdash; how far the experience takes the user from simply seeing a status to understanding drivers and determining an appropriate action.</p>
   <p>Every dashboard carries an unspoken question: <em>how deep does this audience need to see, and how ready do they need to be to act on what they find?</em> Get that wrong and a board member ends up scrolling through raw transaction rows, or an analyst gets handed a red/amber/green tile with no way to dig underneath it. The two axes let you diagnose any dashboard: <strong>Type</strong> (who it's built for, and how much they can poke at it) and <strong>Decision Support Depth</strong> (how much scaffolding sits behind each number &mdash; from a bare status light to a case built to win a room).</p>
   <p><strong>One dashboard, one primary purpose, one primary audience.</strong> A single screen trying to be a board briefing, a daily ops report, <em>and</em> an analyst's sandbox at once doesn't just look cluttered &mdash; it breaks for someone. A board member needs an answer in two seconds; an analyst needs the freedom to ask ten different questions in ten minutes. You can't engineer for both on the same screen &mdash; when a dashboard tries to, that's the diagnostic finding, not a detail to smooth over.</p>
 </section>
@@ -737,7 +737,7 @@
   </div>
   <p>Read top to bottom: first identify <strong>who</strong> the dashboard serves and how they use it (Type), then how much scaffolding sits behind each number (Depth), then whether this user actually holds the <strong>authority</strong> to act on what they see. Only when all three line up does the dashboard reliably produce action. Depth also prices engagement: each rung to the right asks more of the business at design time (see the <a href="#engagement">Engagement Ladder</a>). Data Storytelling sits outside the main flow &mdash; an optional, opt-in communication layer, never a default.</p>
 
-  <div class="flow" role="img" aria-label="Flow diagram: Dashboard Type (Analytical, Operational, Executive) leads to Decision Depth (Snapshot, Insight, Decision, with business engagement rising with depth), then Authority and Context (can this user act?), then Action. Data Storytelling sits apart as an optional communication layer.">
+  <div class="flow" role="img" aria-label="Flow diagram: Dashboard Type (Analytical, Operational, Executive) leads to Decision Support Depth (Snapshot, Insight, Decision, with business engagement rising with depth), then Authority and Context (can this user act?), then Action. Data Storytelling sits apart as an optional communication layer.">
     <div class="flow-title">Analytics Design Framework</div>
     <div class="flow-stage">
       <div class="flow-box">
@@ -751,7 +751,7 @@
       </div>
       <div class="flow-connector"><span class="fc-line"></span><span aria-hidden="true">&#9662;</span></div>
       <div class="flow-box">
-        <div class="fb-name">Decision Depth</div>
+        <div class="fb-name">Decision Support Depth</div>
         <div class="fb-q">scaffolding behind each number</div>
       </div>
       <div class="flow-chips">

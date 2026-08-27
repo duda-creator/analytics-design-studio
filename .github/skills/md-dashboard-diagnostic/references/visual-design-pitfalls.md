@@ -1,12 +1,12 @@
 # Dashboard Visual Design Pitfalls (Stephen Few)
 
-### A craft-level checklist, complementary to the Dashboard Type × Decision Depth framework
+### A craft-level checklist, complementary to the Dashboard Type × Decision Support Depth framework
 
 The Type × Depth framework (`Analytics_Design_Framework.md`) and its "Pitfalls to Watch For" section diagnose **strategic fit** — whether a dashboard is built for the right audience, at the right decision depth. The checklist below diagnoses a different axis entirely: **visual and perceptual craft** — whether an already-well-targeted dashboard is actually well-built, readable, and honest about what it shows.
 
 A dashboard can be perfectly targeted (right type, right depth) and still fail this checklist — cluttered, imprecise, or visually misleading. Conversely, a beautifully-crafted dashboard can still be aimed at the wrong audience. Run both checks; don't let one substitute for the other.
 
-**Overlap note:** Pitfall 2 below ("inadequate context") echoes the Snapshot → Insight-Driven distinction on the Decision Depth Ladder. When both checklists are in use, treat a hit on Pitfall 2 as reinforcing a Depth finding rather than a separate, new one.
+**Overlap note:** Pitfall 2 below ("inadequate context") echoes the Snapshot → Insight-Driven distinction on the Decision Support Depth Ladder. When both checklists are in use, treat a hit on Pitfall 2 as reinforcing a Depth finding rather than a separate, new one.
 
 ---
 
