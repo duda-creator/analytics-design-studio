@@ -1,11 +1,11 @@
 ---
 name: md-dashboard-redesign
-description: "Independent GitHub Copilot skill for redesigning an existing dashboard (screenshots + requirements + sample source data) into a decision-driven redesign: current-state teardown, What/So-What/Now-What recommendations, proposed data model, and data flow spec, published as HTML. Supports four dashboard types and scaffolds dashboards/<name>/ directly on request. Use when the user wants to redesign, audit, or rework a dashboard, or invokes /md-dashboard-redesign."
+description: "Independent GitHub Copilot skill for redesigning an existing dashboard (screenshots + requirements + sample source data) into a type-appropriate, depth-aligned redesign: current-state teardown, metric-level recommendations at the decision depth the selected type supports, proposed data model, and data flow spec, published as HTML. Supports four dashboard types and scaffolds dashboards/<name>/ directly on request. Use when the user wants to redesign, audit, or rework a dashboard, or invokes /md-dashboard-redesign."
 ---
 
 # /md-dashboard-redesign
 
-Takes an existing BI dashboard (screenshots + requirements + sample source data extracts) and reworks it around decision-driven design — What / So What / Now What — then proposes the underlying data model and data flows needed to actually support that redesign.
+Takes an existing BI dashboard (screenshots + requirements + sample source data extracts) and reworks it around the framework principle *design for the decision, not the data* — at the decision depth the selected dashboard type supports — then proposes the underlying data model and data flows needed to actually support that redesign. Shared vocabulary (the three types, the Decision Support Depth ladder, the pitfalls) comes from [reference/Analytics_Design_Framework.md](reference/Analytics_Design_Framework.md).
 
 ## Dashboard folders
 
@@ -103,16 +103,19 @@ Classify the dashboard into one of these four types before Stage 1. If the user 
   - Reference: [reference/operational-insight-driven-design.md](reference/operational-insight-driven-design.md)
   - Use when the dashboard is a repeat-use operating instrument for scan/judge/explain/prioritize/drill workflows.
 
-Always use [reference/executive-decision-driven-design.md](reference/executive-decision-driven-design.md) as the baseline design reference.
+The selected type's reference is the primary design contract. Consult [reference/executive-decision-driven-design.md](reference/executive-decision-driven-design.md) *additionally* only to show what the next rung up would require when a real, nameable decision plausibly sits behind a metric — the framework's standing recommendation — never to force decision machinery (triggers, owners, sign-off) onto an Insight-Driven target whose audience lacks the authority: that is the framework's Authority Gap pitfall. Authority unlocks the rung, not job title.
 
 ## Type selection logic
 
 Use this quick classifier before the pipeline:
 
+- If the screenshots show a genuine analyst workspace — record-level detail plus free-form pivot/explore affordances — stop and say so. Analytical (the Microscope) is never assumed and is not one of the four redesign targets: either the goal is to graduate specific recurring cuts into an Operational or Executive view (ask which cuts recur), or the dashboard should stay analytical and is out of scope for this pipeline. Do not silently classify it as `operational-insight-driven`.
 - If evidence of formal trigger, owner, authority, sign-off states, and governed action controls exists: `executive-decision-driven`.
 - Else if this is clearly built as a one-off or event-specific recommendation narrative with options and an explicit ask: `executive-data-storytelling`.
 - Else if primary audience is senior leadership and the goal is concise implication-led briefing: `executive-insight-driven`.
 - Else default to `operational-insight-driven`.
+
+`executive-data-storytelling` may be *diagnosed* from evidence that the artifact is already presenter-led, but never *proposed* as a redesign target on your own initiative — per the framework, Data Storytelling is opt-in only: recommend it solely when the user explicitly asks for it.
 
 Defaulting rules when requirements/current state are unclear:
 
@@ -145,9 +148,11 @@ Read every file in `screenshots/` (the Read tool handles images natively). For e
 
 Read everything in `requirements/` and note any gap between what's being asked for and what the current dashboard actually delivers.
 
-Score the current state against:
-- [reference/executive-decision-driven-design.md](reference/executive-decision-driven-design.md) as baseline; and
-- the type-specific guide selected in "Supported dashboard types".
+Score the current state against the type-specific guide selected in "Supported dashboard types" — its design contract and acceptance checklist are the rubric.
+
+If different views/tabs land at different types or depths, that is the framework's Everything-to-Everyone Trap: report the mix as a finding and recommend splitting into separate dashboards (name each with a one-line purpose, or point the user at `/md-dashboard-diagnostic` for a full split call) rather than forcing one type across the whole artifact. The mix is the finding, not a detail to smooth over.
+
+Also score it against [reference/visual-design-pitfalls.md](reference/visual-design-pitfalls.md) — a separate, craft-level axis (chart-type choice, precision, color, clutter, layout) independent of the type/content scoring above. Include a short "Visual craft pitfalls" list in `01-current-state-teardown.md`, citing the specific chart/tile each finding comes from; state "none observed" for pitfalls that don't apply.
 
 In `01-current-state-teardown.md`, include a short "Dashboard type fit" section that states:
 - selected type,
@@ -158,12 +163,14 @@ Cite specific views/elements — not generic BI complaints.
 
 ### Stage 2 — Redesign recommendations → `outputs/02-redesign-recommendations.md`
 
-For every key metric or section from Stage 1, work out its What / So What / Now What per [reference/executive-decision-driven-design.md](reference/executive-decision-driven-design.md):
-- **What** — the headline fact, stated as a comparison, not a bare number
-- **So What** — the context that makes it judgeable: target, prior period, benchmark, trend — and why the audience should care
-- **Now What** — the decision or action it should trigger, and what the dashboard needs to surface to support taking it (drill-down, exception flag, suggested next view)
+For every key metric or section from Stage 1, work out the metric anatomy the selected type's reference defines — the three layers of fact/context are common to all types, but the final layer must match the depth the type supports:
 
-Then apply the selected type's reference as the primary design contract:
+- `operational-insight-driven`: **State / Change / Cause / Path** — the final layer is a predefined drill path, "where to look next," never a named trigger or owner.
+- `executive-insight-driven`: **Outcome / Context / Driver / Implication** — the final layer points leadership attention at a topic; it does not invent an approval request.
+- `executive-decision-driven`: **What / So What / Now What** — only here does the final layer name a decision, owner, trigger (or judgement-based review condition), pre-agreed action, and sign-off.
+- `executive-data-storytelling`: the narrative spine (Context / Tension / Evidence / Choice / Resolution) per its reference.
+
+Apply the selected type's reference as the primary design contract:
 - `executive-insight-driven`: use [reference/executive-insight-driven-design.md](reference/executive-insight-driven-design.md)
 - `executive-decision-driven`: use [reference/executive-decision-driven-design.md](reference/executive-decision-driven-design.md)
 - `executive-data-storytelling`: use [reference/executive-data-storytelling-design.md](reference/executive-data-storytelling-design.md)
@@ -174,6 +181,7 @@ Translate that into concrete design changes grounded in Stage 1 evidence:
 - annotations/callouts on notable points,
 - exception highlighting or decision queue treatment as appropriate,
 - removal of chart types that do not support the selected type's completion test,
+- a fix for each Stage 1 visual craft pitfall (per [reference/visual-design-pitfalls.md](reference/visual-design-pitfalls.md)) — e.g. a truncated axis, an unsorted or over-precise table, an ambiguous color legend — listed separately from the content-level changes above since these are craft fixes, not metric-anatomy changes,
 - filters/drill-paths/action controls matched to the selected type.
 
 Do not give generic dashboard-design advice.
@@ -188,7 +196,7 @@ Requires `sample_data/`. Run `python scripts/profile_sample_data.py inputs/sampl
 
 ### Stage 4 — Data flow spec → `outputs/04-data-flow-spec.md`
 
-Bridge current sources to the Stage 3 target model. For each target table: which source extract/system it comes from, the transformations required (joins, grain changes, aggregations, calculated fields), the refresh cadence implied by the selected dashboard type (for example, intraday/daily for operational-insight-driven vs. governance-cycle snapshots for executive types), and open questions/assumptions a data engineer would need to confirm. This is a spec for engineering to implement against, not implementation itself — no need to write actual SQL/dbt unless the user asks for that as a follow-up.
+Bridge current sources to the Stage 3 target model. For each target table: which source extract/system it comes from, the transformations required (joins, grain changes, aggregations, calculated fields), both cadences the framework separates — the **data refresh cadence** (when the underlying data becomes current: an architectural/control requirement) and the **consumption/review rhythm** (when the audience is expected to act on it: a decision-context requirement; an executive view may refresh daily while being consumed per meeting cycle, and executive types additionally need reporting-cycle snapshotting so prior briefings stay reproducible), and open questions/assumptions a data engineer would need to confirm. This is a spec for engineering to implement against, not implementation itself — no need to write actual SQL/dbt unless the user asks for that as a follow-up.
 
 ### Stage 5 — Publish → `outputs/dashboard-redesign.html`
 
@@ -207,6 +215,6 @@ Publish via the Artifact tool and send the user the link. Then run `python scrip
 
 - Every recommendation must trace back to something specific in the screenshots, requirements, or data — no generic BI-consultant filler.
 - If a stage's required input is missing, stop and ask rather than inventing content (screenshots for Stage 1, sample_data for Stage 3).
-- Type-specific guidance is mandatory: always use one of the four supported types and its respective reference document, plus [reference/executive-decision-driven-design.md](reference/executive-decision-driven-design.md).
+- Type-specific guidance is mandatory: always use one of the four supported types and its respective reference document as the primary contract. Never push a design above the depth its audience's authority supports, and never propose Data Storytelling unrequested.
 - Keep the four markdown outputs as the source of truth; the HTML artifact in Stage 5 is a presentation layer over them, not a separate deliverable to maintain in parallel.
 - In markdown outputs, use real `###`/`####` headings for subsections instead of bold text, never reuse identical heading text within a file, increment heading levels by only one at a time, and restart ordered-list numbering at `1.` whenever a new list begins.

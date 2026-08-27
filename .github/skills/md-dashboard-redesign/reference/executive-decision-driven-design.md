@@ -8,9 +8,11 @@ This design is appropriate only when the audience holds the authority to make or
 
 | Dimension | Requirement |
 | --- | --- |
+| Framework position | Executive type (*the Radar*) at Decision-Driven depth — rung 3 of 4 (*Prescription*) on the Decision Support Depth ladder |
 | Primary audience | Executives or governance bodies with authority over the named decision |
 | Core question | "What decision is required, under what conditions, and who acts next?" |
-| Cadence | Aligned to governance meetings and material trigger events |
+| Data refresh cadence | As current as trigger evaluation requires (often daily or intraday), with reproducible snapshots of what was reviewed |
+| Consumption rhythm | Governance meetings and material trigger events |
 | Detail level | Headline condition, decision evidence, and controlled supporting detail |
 | Interaction | Curated review plus explicit acknowledge, approve, reject, modify, or defer controls |
 | Decision depth | Insight plus named decision, owner, trigger, pre-agreed action, and sign-off |
@@ -100,6 +102,10 @@ Specify:
 
 Use early-warning bands to show proximity, but never confuse an amber warning with the formal trigger.
 
+### Judgement-based decisions
+
+Not every governed decision has a deterministic trigger, and the framework does not require one: where the decision is judgement-based, the experience remains Decision-Driven without pretending otherwise. Keep the named decision, owner, authority, evidence, and sign-off, but replace the trigger with an explicit review condition — the forum, cadence, or circumstance under which the accountable owner exercises judgement (for example, "reviewed at each ALCO when headroom is inside the early-warning band"). Manufacturing a numeric threshold for a judgement call is itself a failure mode: the fake trigger reads as governed automation while the real decision logic lives elsewhere.
+
 ## Action and authority design
 
 The action must be as precise as the trigger. Replace "review funding options" with a bounded response such as "draw $500M of CFP Tranche 1 within one business day."
@@ -169,6 +175,7 @@ The dashboard must not implement a parallel approval process when an authoritati
 - **Authority gap:** the regular viewer cannot legally or organizationally authorize the displayed action.
 - **Pseudo-decision:** a generic recommendation is labeled as a decision without a precise choice.
 - **Trigger ambiguity:** the threshold lacks duration, scope, data treatment, or reset logic.
+- **Manufactured trigger:** a deterministic threshold is invented for a judgement-based decision, implying automation the governance process does not have.
 - **Action ambiguity:** the response says "monitor," "review," or "consider" without a bounded next step.
 - **Approval theater:** a button changes dashboard status but does not update the authoritative workflow.
 - **Stale sign-off:** data or assumptions change after review without invalidating approval.
@@ -181,7 +188,7 @@ The dashboard must not implement a parallel approval process when an authoritati
 - [ ] The named audience holds authority for every decision displayed.
 - [ ] Each item states What, So What, and a precise Now What.
 - [ ] Decision, owner, trigger, action, deadline, authority, and sign-off are explicit.
-- [ ] Trigger logic covers persistence, data quality, reset, suppression, and versioning.
+- [ ] Trigger logic covers persistence, data quality, reset, suppression, and versioning — or, for judgement-based decisions, the review condition and forum are named instead of an invented threshold.
 - [ ] Early warnings are visually and semantically distinct from formal triggers.
 - [ ] Actions are bounded, feasible, and linked to prerequisites and fallback paths.
 - [ ] Role-based access, delegation, dual control, and segregation of duties are enforced where needed.

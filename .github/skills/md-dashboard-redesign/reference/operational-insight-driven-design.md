@@ -6,9 +6,11 @@ An Operational + Insight-Driven dashboard is a repeat-use management instrument.
 
 | Dimension | Requirement |
 | --- | --- |
+| Framework position | Operational type (*the Cockpit*) at Insight-Driven depth — rung 2 of 4 (*Diagnosis*) on the Decision Support Depth ladder |
 | Primary audience | Team and function leads running day-to-day operations |
 | Core question | "How are we performing this cycle, what changed, and where should I look?" |
-| Cadence | Fixed technical schedule: intraday, daily, weekly, or monthly |
+| Data refresh cadence | Fixed technical schedule: intraday, daily, weekly, or monthly, with a visible refresh timestamp |
+| Consumption rhythm | Habitual, repeat use — same people, same screen, same time, every cycle |
 | Detail level | Rolled-up metrics with defined drill-through paths |
 | Interaction | A small, stable set of filters and predictable drill paths |
 | Decision depth | Comparison plus a plain-English explanation of meaning |
@@ -26,7 +28,9 @@ Design the screen around a short, repeatable loop:
 4. **Prioritize** — Which exception matters most now?
 5. **Drill** — Which predefined path reveals the affected region, product, desk, team, or process?
 
-The loop ends with a focused investigation or escalation. Formal approval, named sign-off, and pre-agreed executive action belong in a Decision-Driven design unless authority has explicitly been delegated to this audience.
+The loop ends with a focused investigation or escalation. Formal approval, named sign-off, and pre-agreed executive action belong in a Decision-Driven design unless authority has explicitly been delegated to this audience — authority unlocks that rung, not job title.
+
+Metrics enter this dashboard by **graduation**: when an analyst keeps pulling the same cut every week, that recurring cut should be promoted into a governed tile here — a deliberate hand-off, not scope creep. Redesigns should look for those recurring analytical cuts as candidate KPIs.
 
 ## Metric anatomy: State / Change / Cause / Path
 
@@ -134,7 +138,7 @@ Precompute governed deltas and exception flags where practical. Do not leave eve
 
 - **Snapshot in disguise:** status colors and targets appear, but no meaningful comparison or explanation is present.
 - **Analytical sprawl:** free-form pivots and unrestricted dimensions make the recurring workflow slower and less reproducible.
-- **Executive dress-up:** large headline cards displace the operational driver and drill context the audience needs.
+- **Radar creep:** large executive-style headline cards displace the operational driver and drill context the audience needs.
 - **Alert wallpaper:** too many items are highlighted, so none has priority.
 - **False causality:** the largest contributor is automatically described as the cause.
 - **Authority gap:** the screen instructs an action or approval that its regular viewer cannot authorize.

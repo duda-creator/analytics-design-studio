@@ -6,15 +6,19 @@ An Executive + Insight-Driven dashboard is a curated briefing surface for senior
 
 | Dimension | Requirement |
 | --- | --- |
+| Framework position | Executive type (*the Radar*) at Insight-Driven depth — rung 2 of 4 (*Diagnosis*) on the Decision Support Depth ladder |
 | Primary audience | Senior leaders, executive committees, and boards |
 | Core question | "What changed, why does it matter, and what deserves our attention?" |
-| Cadence | Aligned to a leadership meeting or governance cycle |
+| Data refresh cadence | As current as the metrics require (often daily), with reporting-cycle snapshots so prior briefings stay reproducible |
+| Consumption rhythm | Aligned to a leadership meeting or governance cycle |
 | Detail level | A small number of enterprise-level outcomes and drivers |
 | Interaction | Look-first; at most a period or scenario toggle and curated detail links |
 | Decision depth | Comparison plus an explicit executive implication |
 | Completion test | The audience can state the material change and its consequence without interpreting the charts themselves |
 
 The dashboard is not a compressed operational report. Every metric must earn its place by changing leadership's understanding of performance, risk, resilience, or strategic trajectory.
+
+Two framework rules frame this combination. First, an Executive dashboard sitting at Snapshot — bare numbers with no comparison or implication — is a diagnostic finding calling for revamp to this design, never a valid steady state. Second, when a real, nameable decision sits behind a recurring insight, climbing to Decision-Driven (see [executive-decision-driven-design.md](executive-decision-driven-design.md)) is the framework's standing recommendation — provided the audience genuinely holds the authority, since authority unlocks the rung, not job title.
 
 ## Executive insight anatomy: Outcome / Context / Driver / Implication
 

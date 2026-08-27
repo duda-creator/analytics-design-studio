@@ -1,13 +1,15 @@
 ---
 name: md-dashboard-diagnostic
-description: Diagnose an existing dashboard (from an uploaded screenshot, image, or description) against a Dashboard Type × Decision Depth framework — classifying it as Analytical (Microscope), Operational (Cockpit), or Executive (Radar), and placing it on the Decision Depth Ladder (Snapshot, Insight-Driven, Decision-Driven, Data Storytelling), then reporting strengths, gaps against a requested or default target, and pitfalls, with a visual scorecard. Closes with a proposed action (retain / revamp / split), and can compare multiple already-diagnosed dashboards to propose merges or retirements. Built for CIB & Treasury dashboards (risk, trade finance, liquidity, capital, ALCO reporting) but the rubric applies to any BI screenshot. Use whenever the user uploads or references a dashboard screenshot and asks to audit, diagnose, evaluate, review, or "sanity check" it — including phrasing like "is this Insight-Driven yet", "is this a Cockpit or a Radar", "what depth is this dashboard at", "check this against the framework/ladder", "should we split/merge these dashboards", or when a user shares a dashboard screenshot (Tableau, Power BI, Looker, an internal risk/treasury system, etc.) with a question about its depth, audience-fit, or maturity. Trigger even without the framework named explicitly, as long as the ask is "grade/assess/where does this sit" for a dashboard.
+description: Diagnose an existing dashboard (from an uploaded screenshot, image, or description) against a Dashboard Type × Decision Depth framework — classifying it as Analytical (Microscope), Operational (Cockpit), or Executive (Radar), and placing it on the Decision Depth Ladder (Snapshot, Insight-Driven, Decision-Driven, Data Storytelling), then reporting strengths, gaps against a requested or default target, and pitfalls, with a visual scorecard. Closes with a proposed action (retain / revamp / split), and can compare multiple already-diagnosed dashboards to propose merges or retirements. Built for financial-services dashboards (risk, trade finance, liquidity, capital, board/committee reporting) with worked examples drawn from CIB & Treasury, and the rubric applies to any BI screenshot. Use whenever the user uploads or references a dashboard screenshot and asks to audit, diagnose, evaluate, review, or "sanity check" it — including phrasing like "is this Insight-Driven yet", "is this a Cockpit or a Radar", "what depth is this dashboard at", "check this against the framework/ladder", "should we split/merge these dashboards", or when a user shares a dashboard screenshot (Tableau, Power BI, Looker, an internal risk/treasury system, etc.) with a question about its depth, audience-fit, or maturity. Trigger even without the framework named explicitly, as long as the ask is "grade/assess/where does this sit" for a dashboard.
 ---
 
 # Dashboard Diagnostic
 
 This skill audits a *real, already-built* dashboard against a Dashboard Type × Decision Depth framework: which of the three Dashboard Types it actually behaves like, and — for Operational and Executive — which rung of the Decision Depth Ladder it currently occupies versus the rung it should occupy. It closes with a visual scorecard so the gap is legible at a glance, not just described in prose.
 
-Read `references/framework.md` in full before classifying anything. It contains the complete rubric — the type comparison table, the depth ladder, the type × depth ceiling rules, the pitfalls, and a feature library of concrete, non-overlapping signals for every type and every rung — and several of its rules are load-bearing exceptions (e.g. an Operational dashboard can only reach Decision-Driven with delegated authority; an unrequested Executive dashboard sitting at Snapshot is a finding, not a delivery). Skimming a summary instead of the source risks misapplying these.
+Read `references/Analytics_Design_Framework.md` in full before classifying anything. It contains the complete rubric — the type comparison table, the depth ladder, the type × depth ceiling rules, the pitfalls, and a feature library of concrete, non-overlapping signals for every type and every rung — and several of its rules are load-bearing exceptions (e.g. an Operational dashboard can only reach Decision-Driven with delegated authority; an unrequested Executive dashboard sitting at Snapshot is a finding, not a delivery). Skimming a summary instead of the source risks misapplying these.
+
+Also read `references/visual-design-pitfalls.md` before Step 6. It covers a separate axis from `Analytics_Design_Framework.md` — visual and perceptual **craft** (precision, chart-type choice, color, clutter, layout) rather than strategic fit (audience/depth) — and Step 6 checks both.
 
 ## Scaffolding a new dashboard
 
@@ -67,23 +69,24 @@ Look directly at the screenshot(s) (you have vision — use it, don't ask the us
 - **Interactivity cues**: visible filters, drill-down affordances, "explore" or slice/dice controls (even if you can't click them, the UI chrome tells you they exist) vs. a static, curated layout.
 - **Cadence markers**: "as of [date]", "updated daily/weekly/monthly", live-refresh indicators.
 - **Visual density and polish**: a dense grid of small multiples reads differently from three or four large, curated numbers — density is itself evidence of intended audience.
+- **Craft signals**: chart types used, axis treatment (truncated/non-zero baselines), color usage, decimal precision, clutter/chart-junk, layout crowding — this is the evidence Step 6's visual craft pitfall check draws on, per `references/visual-design-pitfalls.md`.
 
 Quote or describe the specific tile, label, or number that supports each classification call in your report — "the top-left card shows LCR at 128% with no comparison" is checkable evidence; "this looks operational" is not.
 
 ## Step 3 — Classify the Type
 
-Using the comparison table in `references/framework.md`, decide which of the three the dashboard *behaves like right now*, independent of what it was supposed to be:
+Using the comparison table in `references/Analytics_Design_Framework.md`, decide which of the three the dashboard *behaves like right now*, independent of what it was supposed to be:
 
 - **🔬 Analytical (the Microscope)** — record-level detail, free-form slicing, built for someone actively investigating a question.
 - **🎛️ Operational (the Cockpit)** — rolled-up metrics, filters on the well-worn questions, a fixed reporting cadence.
 - **📡 Executive (the Radar)** — headline numbers only, curated and clean, nothing to poke at.
 
-Cross-check against the Feature Library in `references/framework.md` — each type's signature-features list is written so items don't overlap across types, so a feature you spot on screen should point at one type, not several.
+Cross-check against the Feature Library in `references/Analytics_Design_Framework.md` — each type's signature-features list is written so items don't overlap across types, so a feature you spot on screen should point at one type, not several.
 
 Two things to actively check for, because they're named pitfalls, not just style differences:
 
 - **Everything-to-Everyone Trap**: does the same screen mix record-level detail with headline-only framing? That's not "a bit of both" — call it out plainly rather than splitting the difference.
-- **Executive Cosplay**: is this a dense operational report with the font shrunk and an "Executive Summary" label slapped on it, rather than something curated from the ground up? Look for the tell: operational-density content (many small tiles, drill controls) wearing Executive labeling.
+- **Executive Dress-Up**: is this a dense operational report with the font shrunk and an "Executive Summary" label slapped on it, rather than something curated from the ground up? Look for the tell: operational-density content (many small tiles, drill controls) wearing Executive labeling.
 
 If the type is ambiguous or mixed, don't force a single label — report it as a mix and name which pitfall it matches, since that mix *is* the finding.
 
@@ -91,14 +94,14 @@ If the type is ambiguous or mixed, don't force a single label — report it as a
 
 **If the dashboard is Analytical**, skip the ladder entirely — investigation isn't leveled. Instead, audit the metrics for the flag test the framework uses: does each number carry a comparison and a "so what," or is it raw? Report this per metric or per section, not as a single score.
 
-**If it's Operational or Executive**, place it on the ladder using the test in `references/framework.md` — "Snapshot tells you if a number is good or bad. Insight-Driven tells you why, compared to what, and what that means":
+**If it's Operational or Executive**, place it on the ladder using the test in `references/Analytics_Design_Framework.md` — "Snapshot tells you if a number is good or bad. Insight-Driven tells you why, compared to what, and what that means":
 
 - **Snapshot** *(Pulse Check)*: a target/status line with no comparison and no explanation — colors alone.
 - **Insight-Driven** *(Diagnosis)*: a comparison point (vs. last period, budget, forecast, peer) plus a plain-English sentence saying what it means.
 - **Decision-Driven** *(Prescription)*: everything in Insight-Driven, *plus* a named decision, named owner, a stated trigger point, a pre-agreed action, and sign-off — a workflow, not a report. Look for this explicitly; don't infer it from Insight-Driven content that merely looks important.
 - **Data Storytelling** *(Pitch)*: a built, defended narrative aimed at winning a specific live decision — this is very rarely what a static screenshot shows, since it's presented, not screenshotted. Only call it Data Storytelling if there's clear evidence of an argument being built to move a room (e.g. slide-like framing, a call to action), not just because the stakes look high.
 
-Apply the ceiling rules from the Type × Depth Matrix in `references/framework.md` as you go: an Operational dashboard that reaches Decision-Driven needs evidence of *delegated authority*, not just a trigger threshold on the screen — if you can't tell whether the person using it holds that authority, say so as an open question rather than asserting Decision-Driven. An Executive dashboard sitting at Snapshot isn't a valid steady-state design — it's a diagnostic finding calling for revamp to Insight-Driven, and your report should say that explicitly rather than reporting Snapshot as merely "on target."
+Apply the ceiling rules from the Type × Depth Matrix in `references/Analytics_Design_Framework.md` as you go: an Operational dashboard that reaches Decision-Driven needs evidence of *delegated authority*, not just a trigger threshold on the screen — if you can't tell whether the person using it holds that authority, say so as an open question rather than asserting Decision-Driven. An Executive dashboard sitting at Snapshot isn't a valid steady-state design — it's a diagnostic finding calling for revamp to Insight-Driven, and your report should say that explicitly rather than reporting Snapshot as merely "on target."
 
 ## Step 5 — Ask only what you can't infer
 
@@ -127,8 +130,11 @@ Now assemble the findings using this structure (adapt section content to what yo
 ## Gaps vs. [target]
 [Specific, named gaps — e.g. "no comparison point on any tile: currently Snapshot, target is Insight-Driven" — each gap should point to what closing it would require (the Feature Library's revamp moves are good source material), not just that it's missing]
 
-## Pitfall check
-[Name any of the five that apply, with the specific evidence; state "none observed" if genuinely clean]
+## Strategic fit pitfall check
+[Name any of the framework's five apply, with the specific evidence; state "none observed" if genuinely clean]
+
+## Visual craft pitfall check
+[Score against the 13 pitfalls in `references/visual-design-pitfalls.md`; name only the ones with concrete on-screen evidence (e.g. "truncated y-axis on the trend chart"), and state "none observed" for a clean pass. Don't double-count a Pitfall 2 (inadequate context) hit that's already captured above as a Depth gap.]
 
 ## Open questions
 [Only if Step 5 left something unresolved — otherwise omit this section]

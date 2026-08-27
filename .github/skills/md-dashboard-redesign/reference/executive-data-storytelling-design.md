@@ -1,16 +1,18 @@
-# Executive + Data Storytelling dashboard design
+# Executive + Data Storytelling decision-artifact design
 
-Executive + Data Storytelling is a presenter-led decision artifact built to win a specific, time-bound call from an authorized audience. It uses governed dashboard evidence, but it is not a general-purpose self-service dashboard. The design is sequential: it establishes the stakes, explains the change, tests alternatives, makes a recommendation, and ends with an explicit ask.
+Executive + Data Storytelling is a presenter-led decision artifact built to win a specific, time-bound call from an authorized audience. On the framework's Decision Support Depth ladder it is rung 4 of 4 (*Pitch*) — an optional communication layer built on top of a Decision-Driven foundation: a built, sequential narrative (slides, a doc, a presented case), not a live dashboard screen. It uses governed dashboard evidence, but it is not a general-purpose self-service dashboard. The design is sequential: it establishes the stakes, explains the change, tests alternatives, makes a recommendation, and ends with an explicit ask.
 
-Use this combination only when a real decision must be made in a live forum and the case requires explanation or persuasion. It is expensive to prepare, easy to overuse, and weakens trust when every reporting cycle is treated as a dramatic story.
+Use this combination only when a real decision must be made in a live forum and the case requires explanation or persuasion. It is expensive to prepare, easy to overuse, and weakens trust when every reporting cycle is treated as a dramatic story. Per the framework, Data Storytelling is never a default and never a proactive recommendation — build it only when explicitly requested for a real decision event.
 
 ## Design contract
 
 | Dimension | Requirement |
 | --- | --- |
+| Framework position | Executive type (*the Radar*) at Data Storytelling depth — rung 4 of 4 (*Pitch*), a communication layer over a Decision-Driven foundation |
 | Primary audience | A named executive committee, board, or authorized decision forum |
 | Core question | "Why should we make this specific decision now?" |
-| Cadence | Built for a scheduled decision event, not routine refresh |
+| Data refresh cadence | A reproducible snapshot as of the meeting's as-of date — no routine refresh |
+| Consumption rhythm | A scheduled decision event, presented live |
 | Detail level | Curated evidence required to defend one recommendation |
 | Interaction | Presenter-controlled sequence with optional evidence drill-down |
 | Decision depth | Decision workflow plus a coherent case, alternatives, and explicit ask |
