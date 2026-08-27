@@ -24,7 +24,7 @@ Every dashboard carries an unspoken question: *how deep does this audience need 
 
 ## The Framework at a Glance
 
-Read top to bottom: first identify **who** the dashboard serves and how they use it (Type), then how much scaffolding sits behind each number (Depth), then whether this user actually holds the **authority** to act on what they see. Only when all three line up does the dashboard reliably produce action. Data Storytelling sits outside the main flow — an optional, opt-in communication layer, never a default.
+Read top to bottom: first identify **who** the dashboard serves and how they use it (Type), then how much scaffolding sits behind each number (Depth), then whether this user actually holds the **authority** to act on what they see. Only when all three line up does the dashboard reliably produce action. Depth also prices engagement: each rung to the right asks more of the business at design time (see the Engagement Ladder below). Data Storytelling sits outside the main flow — an optional, opt-in communication layer, never a default.
 
 ```text
                  ANALYTICS DESIGN FRAMEWORK
@@ -46,8 +46,8 @@ Read top to bottom: first identify **who** the dashboard serves and how they use
                              │
                 ┌────────────┼────────────┐
                 │            │            │
-            Snapshot      Insight      Decision
-                │            │            │
+            Snapshot      Insight      Decision    ─▶ business engagement
+                │            │            │           rises with depth
                 └────────────┼────────────┘
                              │
                      AUTHORITY / CONTEXT
@@ -107,6 +107,24 @@ Not every number needs the same scaffolding around it. The ladder measures how m
 
 ---
 
+## The Engagement Ladder: What Each Rung Asks of the Business
+
+Depth is bought, not requested. Every rung on the ladder is built from inputs only the business can supply — an analyst can chart a number, but cannot invent the comparison that matters, the reason it moved, the decision it feeds, or the person with the authority to act. So each rung is a **two-way contract**: the business commits specific inputs and time, and in exchange gets a dashboard that actually delivers the depth it asked for. Rising engagement is not a toll gate — it is the reason delivery at that rung is possible at all. Set this expectation at requirements time, not mid-build.
+
+| Rung | The business brings at design time | Ongoing obligation | Engagement shape |
+|---|---|---|---|
+| **Snapshot** | The agreed metric definition, the threshold, and who set it | Confirm the threshold stays current | *Light* — one definitions session |
+| **Insight-Driven** | Which comparison actually matters (budget? last period? peer?), plus **interpretation access** — someone who can explain *why* the number moved, reachable each cycle. The "why" sentence cannot be authored by the data team alone | A named contributor validates the takeaway each cycle | *Moderate* — definitions plus a recurring review touchpoint |
+| **Decision-Driven** | The named decision, the named owner **in the room**, the authority map, agreed trigger values, the pre-agreed action, and the sign-off route | Confirm the trigger fired and the action was taken — skipping this is the Fire-and-Forget pitfall | *Substantial* — this is a governance design exercise, not a build request: workshops with the decision owner present |
+| **Data Storytelling** | The live decision and the room it will be decided in, plus a business sponsor who presents and defends the case | The sponsor owns the ask and its follow-through | *Highest, episodic* — the analyst partners on the evidence; the business owns the argument |
+
+Two boundary notes:
+
+- **Analytical sits outside this ladder.** There the business user *is* the analyst — they self-serve the engagement by doing the investigation themselves.
+- **The authority map is a business input, not an analyst guess.** Wiring a trigger to someone who can't pull it is the Authority Gap pitfall; only the business can say where the decision actually sits.
+
+---
+
 ## The Type × Depth Matrix
 Not every type needs to climb the whole ladder. Type and Depth are complementary dimensions, but the useful combinations are constrained by purpose and authority.
 
@@ -145,6 +163,8 @@ The metric is the same. The **experience, depth and decision context are differe
 4. **The Fire-and-Forget Dashboard** — shipping a Decision-Driven dashboard and never checking whether the trigger fired and the named owner actually acted. Skip this, and a liquidity dashboard's CFP trigger quietly becomes a report with extra fields that nobody ever confirmed actually fired.
 
 5. **The Vanity Metric Radar** — an Executive dashboard full of big, impressive-looking numbers ("Total Assets Under Management: $42B") with no comparison point and no connection to any decision. Headline-shaped, but content-empty — a Snapshot-level tile that's snuck onto an exec screen undiagnosed.
+
+6. **The Unfunded Depth Request** — a stakeholder asks for Decision-Driven (or Data Storytelling) depth but commits none of the inputs that rung requires: no owner named, no trigger agreed, nobody available to explain why the number moved. The tell: "just make it decision-driven" with no workshop on anyone's calendar. The fix isn't to refuse or to fake it with empty trigger fields — it's to put the Engagement Ladder on the table: deliver the rung the business will fund, or book the engagement the rung they want actually costs.
 
 ---
 
@@ -241,6 +261,7 @@ When a target isn't stated, don't guess — use a known default and say so out l
 - **Analytical is never assumed.** Ad hoc, drill-to-record capability has to be explicitly requested or evidenced — defaulting to it invites an open-ended, unscoped diagnosis.
 - **Snapshot, on either Operational or Executive, is a diagnostic finding, not a target.** If a dashboard is sitting there with no comparison and no insight, the standing recommendation is to revamp it to Insight-Driven.
 - **Decision-Driven is the rung worth climbing toward** wherever an Insight-Driven dashboard has a real, nameable decision plausibly sitting behind it — call it out as a standing recommendation, not an instruction.
+- **Any recommendation to climb a rung should name the engagement it will require from the business** — the specific inputs and sessions from the Engagement Ladder, not just the features to add. A climb recommended without its engagement cost invites the Unfunded Depth Request.
 - **Data Storytelling is never a default and never a proactive recommendation.** Only assess or recommend it when explicitly requested.
 
 ---
