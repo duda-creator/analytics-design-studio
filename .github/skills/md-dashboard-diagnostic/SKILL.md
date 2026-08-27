@@ -1,6 +1,6 @@
 ---
 name: md-dashboard-diagnostic
-description: Diagnose an existing dashboard (from an uploaded screenshot, image, or description) against a Dashboard Type × Decision Depth framework — classifying it as Analytical (Microscope), Operational (Cockpit), or Executive (Radar), and placing it on the Decision Depth Ladder (Snapshot, Insight-Driven, Decision-Driven, Data Storytelling), then reporting strengths, gaps against a requested or default target, and pitfalls, with a visual scorecard. Built for CIB & Treasury dashboards (risk, trade finance, liquidity, capital, ALCO reporting) but the rubric applies to any BI screenshot. Use whenever the user uploads or references a dashboard screenshot and asks to audit, diagnose, evaluate, review, or "sanity check" it — including phrasing like "is this Insight-Driven yet", "is this a Cockpit or a Radar", "what depth is this dashboard at", "check this against the framework/ladder", or when a user shares a dashboard screenshot (Tableau, Power BI, Looker, an internal risk/treasury system, etc.) with a question about its depth, audience-fit, or maturity. Trigger even without the framework named explicitly, as long as the ask is "grade/assess/where does this sit" for a dashboard.
+description: Diagnose an existing dashboard (from an uploaded screenshot, image, or description) against a Dashboard Type × Decision Depth framework — classifying it as Analytical (Microscope), Operational (Cockpit), or Executive (Radar), and placing it on the Decision Depth Ladder (Snapshot, Insight-Driven, Decision-Driven, Data Storytelling), then reporting strengths, gaps against a requested or default target, and pitfalls, with a visual scorecard. Closes with a proposed action (retain / revamp / split), and can compare multiple already-diagnosed dashboards to propose merges or retirements. Built for CIB & Treasury dashboards (risk, trade finance, liquidity, capital, ALCO reporting) but the rubric applies to any BI screenshot. Use whenever the user uploads or references a dashboard screenshot and asks to audit, diagnose, evaluate, review, or "sanity check" it — including phrasing like "is this Insight-Driven yet", "is this a Cockpit or a Radar", "what depth is this dashboard at", "check this against the framework/ladder", "should we split/merge these dashboards", or when a user shares a dashboard screenshot (Tableau, Power BI, Looker, an internal risk/treasury system, etc.) with a question about its depth, audience-fit, or maturity. Trigger even without the framework named explicitly, as long as the ask is "grade/assess/where does this sit" for a dashboard.
 ---
 
 # Dashboard Diagnostic
@@ -32,8 +32,9 @@ dashboard screenshots, requirements, and optional sample data, then invoke
 ## Usage
 
 ```text
-/md-dashboard-diagnostic new <name>  # scaffold a new dashboard folder
-/md-dashboard-diagnostic <name>      # diagnose the dashboard
+/md-dashboard-diagnostic new <name>                    # scaffold a new dashboard folder
+/md-dashboard-diagnostic <name>                        # diagnose the dashboard
+/md-dashboard-diagnostic compare <name1> <name2> ...   # compare 2+ already-diagnosed dashboards
 ```
 
 For `new <name>`, confirm that these subfolders exist before returning:
@@ -134,6 +135,13 @@ Now assemble the findings using this structure (adapt section content to what yo
 
 ## Recommendation
 [Follow the framework's own diagnostic-default rules: a Snapshot Operational/Executive dashboard → recommend revamp to Insight-Driven, not just "add more detail." An Insight-Driven dashboard with a real nameable decision behind it → make the case for Decision-Driven as a standing recommendation, not an instruction. Never recommend Data Storytelling proactively — it's opt-in only. If it's already on target, say so plainly instead of manufacturing a gap.]
+
+## Proposed Action
+[One of the following, chosen from evidence already gathered in Steps 2-4 — never introduce new evidence here:]
+- **Retain** — one clear audience/purpose at an appropriate type/depth; only the gaps above apply, no structural change.
+- **Revamp** — one audience/purpose, but under- or over-built for target; closing the gaps above is enough, no split needed.
+- **Split into: [Name A — purpose], [Name B — purpose], ...** — use only when Step 3/4 evidence supports it: the Everything-to-Everyone Trap, different tabs/screenshots landing at different types or depths, or mixed audiences/grains/cadences/authority levels on the same screen. Name each proposed dashboard and its purpose in one line; do not design them here.
+- **Flag for portfolio comparison** — if this dashboard's purpose/KPIs look like they overlap with another dashboard the user has mentioned or that also exists in `dashboards/`, say so here and recommend running `/md-dashboard-diagnostic compare <this-name> <other-name>` rather than guessing at overlap from one dashboard's evidence alone.
 ```
 
 Keep the prose specific and evidence-grounded throughout — every claim about Type or Depth should trace back to something named in Step 2, not general impressions.
@@ -146,9 +154,41 @@ If you're extending or restyling it, consult the `frontend-design` skill for the
 
 Save the files to `dashboards/<name>/outputs/` using the dashboard-specific names `<name>_diagnostic.md` and `<name>_scorecard.html`, then present both files to the user together. The scorecard is the at-a-glance version; the report is where the reasoning and evidence live.
 
+## Comparing multiple dashboards (`compare`)
+
+Use this mode only when the user has 2+ dashboards that already exist as separate `dashboards/<name>/` folders and wants to know whether any should be merged, retired, or retained as-is — this is the cross-dashboard counterpart to the single-dashboard `Split` call in Step 6, and it never mixes their `inputs/` folders together (each dashboard keeps its own screenshots/requirements/sample_data — merging those folders would corrupt Stage 3 data profiling if the sources are unrelated).
+
+`/md-dashboard-diagnostic compare <name1> <name2> [<name3> ...]`
+
+1. For each `<nameN>`, read `dashboards/<nameN>/outputs/<nameN>_diagnostic.md`. If it doesn't exist yet, run Steps 1-7 for that dashboard first to produce it — don't guess at a dashboard's type/depth/purpose from memory.
+2. Compare the dashboards using only what's in their diagnostic reports (purpose, audience, type, depth, KPIs/decisions referenced, Proposed Action): look for shared audience, duplicate or near-duplicate KPIs, overlapping decisions, and redundant grain. Cite the specific diagnostic report each overlap claim comes from — "same audience" or "looks similar" is not evidence.
+3. Write `dashboards/_comparisons/<name1>-<name2>[-<name3>...]_portfolio-synthesis.md`:
+
+```markdown
+# Portfolio Comparison — [name1] vs [name2] ...
+
+## Dashboards compared
+| Dashboard | Type | Depth | Audience | Purpose (one line) |
+| --- | --- | --- | --- | --- |
+| [name1] | ... | ... | ... | ... |
+
+## Overlap evidence
+[Specific KPI/decision/audience overlaps, each citing the source diagnostic report; state "no material overlap found" if genuinely distinct]
+
+## Proposed Action
+- **Retain:** [names] — distinct audience/purpose, no overlap found
+- **Merge:** [Name A + Name B] → [proposed merged name] — [why, tied to the overlap evidence above]
+- **Retire:** [name] — [why: fully superseded by another compared dashboard]
+
+## Open questions
+[Anything needed before detailed design can proceed on the retained/merged set — otherwise omit this section]
+```
+
+This synthesis file is markdown only — it does not need a companion scorecard. Each compared dashboard's own `<name>_diagnostic.md`/`<name>_scorecard.html` stay unchanged.
+
 ## Handling edge cases
 
 - **No image, just a description**: work from the user's description as evidence instead, but be more conservative about confidence — say plainly which calls would firm up with an actual screenshot. Ask clarifying questions if the description is vague or incomplete, and note any assumptions you make in the report.
-- **Multiple screenshots of one dashboard** (different tabs/states): treat them as one diagnosis, pooling evidence across all of them; note if different tabs land at different depths (common, and worth flagging — e.g. "the summary tab is Snapshot but the drill-down tab adds Insight-Driven context").
-- **Multiple genuinely different dashboards** in one request: diagnose each separately with its own report/scorecard pair rather than merging them — one dashboard, one type, one primary audience applies to the diagnosis too.
+- **Multiple screenshots of one dashboard** (different tabs/states): treat them as one diagnosis, pooling evidence across all of them; note if different tabs land at different depths (common, and worth flagging — e.g. "the summary tab is Snapshot but the drill-down tab adds Insight-Driven context") — this is also the primary evidence for a Step 6 `Split` call.
+- **Multiple genuinely different dashboards** in one request: diagnose each separately with its own report/scorecard pair rather than merging them — one dashboard, one type, one primary audience applies to the diagnosis too. If the user actually wants to know whether they overlap or should merge, use `compare` after each has its own diagnostic report.
 - **The dashboard is fine**: it's a legitimate outcome for the verdict to be "on target, no material gaps" — don't manufacture findings to fill out every section.
